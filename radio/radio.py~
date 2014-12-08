@@ -1,0 +1,28 @@
+import kiss
+
+
+class Radio():
+
+    def __init__(self):
+
+        self.serial = kiss.KISS("/dev/ttyS0",9600)
+        self.serial.start()
+
+    def receive(self):
+
+        packet = ""
+
+        #Append bytes from serial port to message until null is received.
+        while packet[-1:] != '\0':
+            new_data = serial.read()
+            print new_data
+            packet += new_data
+            
+        #Strip null
+        packet = packet[:-1]
+        
+        return packet
+        
+        
+        
+    

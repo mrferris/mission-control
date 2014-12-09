@@ -8,25 +8,44 @@ class Radio():
         self.serial = kiss.KISS("/dev/ttyS0",9600)
         self.serial.start()
 
+
     def receive(self):
 
-        packet = ""
+        received_bytes = ""
 
         #Append bytes from serial port to message until null is received.
-        while packet[-1:] != '\0':
-            new_data = serial.read()
-            print new_data
-            packet += new_data
+        while received_bytes[-3:] != 'EOT':
+
+            new_data = self.serial.read()
+            new_data = new_data[:-1]
+#            new_data = self.remove_non_ascii(new_data)
+            
+            print "new data: " + new_data
+            received_bytes += new_data
+            print received_bytes
             
         #Strip null
-        packet = packet[:-1]
+        received_bytes = received_bytes[:-3]
+        return received_bytes
+
+    
+    def receive_one(self):
         
-        return packet
-        
+        return self.serial.read()
+
+    def remove_non_ascii(self,s):
+
+        return "".join(i for i in s if ord(i)<128)
+
+    
 
 if __name__ == "__main__":
     
     r = Radio()
-    print r.receive()
+    while True:
+        print r.receive()
+        print "Received packet."
+
+
         
     

@@ -18,7 +18,7 @@ class Radio():
 
             new_data = self.serial.read()
             new_data = new_data[:-1]
-#            new_data = self.remove_non_ascii(new_data)
+            new_data = self.remove_non_ascii(new_data)
             
             print "new data: " + new_data
             received_bytes += new_data

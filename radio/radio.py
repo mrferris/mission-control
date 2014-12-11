@@ -5,6 +5,7 @@ class Radio():
 
     def __init__(self):
 
+        print "Radio"
         self.serial = kiss.KISS("/dev/ttyS0",9600)
         self.serial.start()
 
@@ -41,7 +42,7 @@ class Radio():
 
 if __name__ == "__main__":
     
-    r = Radio()
+#    r = Radio()
     while True:
         print r.receive()
         print "Received packet."

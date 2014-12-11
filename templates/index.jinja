@@ -28,11 +28,10 @@
               <h1>Health Data</h1>
             </div> 
             <div class="card-footer">
-              <p>Footer</p>
-              <p>Sample content</p>
-              <p>Sample content</p>
-              <a class="card-action" href="#">This is a link</a>
-              <a class="card-action" href="#">This is a link</a>
+	      <div class="telemetry">
+		<p>Waiting for telemetry data...</p>
+	      </div>
+
            </div>
           </div>
         </div>
@@ -43,7 +42,7 @@
               <h1>Star Tracker Matched Image</h1>
             </div> 
             <div class="card-footer">
-              <img src="{{url_for('static',filename="images/stars.jpg")}}" class="centeredImage" height="350px" width="350px">
+              <img src="{{url_for('static',filename="images/color.bmp")}}" class="centeredImage" height="350px" width="350px">
            </div>
           </div>
         </div>
@@ -82,6 +81,7 @@
 
       <script type="text/javascript" src="{{url_for('static',filename="jquery/dist/jquery.min.js")}}"></script>
       <script type="text/javascript" src="{{url_for('static',filename="materialize/js/materialize.min.js")}}"></script>
+      <script type="text/javascript" src="{{url_for('static',filename="js/telemetryupdate.js")}}"></script>
     </body>
   </html>
         

@@ -4,11 +4,12 @@ from pymongo import MongoClient
 import time
 import redis
 
+
 def com_thread():
-    
+    print "IN COM THREAD"
     #Instantiate db and radio.
     client = MongoClient()
-    r = redis.Redis()
+    rdb = redis.Redis('localhost')
     db = client.test
     
     #Create db collections
@@ -21,12 +22,18 @@ def com_thread():
     while True:
         
         message_string = r.receive()
-        message = json.loads(message_string)
+        message = None
+        print "Message_string: " + message_string
+        print "Message_len: " + str(len(message_string))
+        try:
+            message = json.loads(message_string)
+
+        except ValueError:
+            print "Malformed JSON received."
+        
+        if message is not None:
+            rdb.publish('beacon_update',message_string)
 #        message = receive('message.json')
-        message["received_time"] = int(time.time())
-        message_id = messages.insert(message)
-        print message_id
-        print message
 
 
 
@@ -36,6 +43,6 @@ def receive(file_name):
         return json.load(json_file)
 
         
-if __name__ == "__main__":
-    com_thread()
+#if __name__ == "__main__":
+#    com_thread()
 

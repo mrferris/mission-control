@@ -9,7 +9,7 @@ def com_thread():
     print "IN COM THREAD"
     #Instantiate db and radio.
     client = MongoClient()
-    rdb = redis.Redis('localhost')
+    rdb = redis.StrictRedis('localhost')
     db = client.test
     
     #Create db collections

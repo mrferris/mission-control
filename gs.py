@@ -7,7 +7,7 @@ import threading
 import redis
 
 app = Flask(__name__)
-r = redis.Redis('localhost')
+r = redis.StrictRedis('localhost')
 
 #Welcome/future-login screen
 @app.route("/index")

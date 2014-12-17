@@ -21,7 +21,7 @@ def com_thread():
     
     while True:
         
-        message_string = r.receive()
+        message_string = r.receive_sim_data()
         message = None
         print "Message_string: " + message_string
         print "Message_len: " + str(len(message_string))

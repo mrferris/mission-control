@@ -1,4 +1,5 @@
 import kiss
+from time import sleep
 
 
 class Radio():
@@ -27,6 +28,17 @@ class Radio():
             
         #Strip null
         received_bytes = received_bytes[:-3]
+        return received_bytes
+
+    telemsim = open('telemsim.json')
+
+    def receive_sim_data(self):
+
+        received_bytes = telemsim.readline()
+        if received_bytes == '':
+            telemsim.seek(0)
+            received_bytes = telemsim.readline()
+        sleep(0.5)
         return received_bytes
 
     

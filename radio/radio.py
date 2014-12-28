@@ -29,7 +29,6 @@ class Radio():
         received_bytes = received_bytes[:-3]
         return received_bytes
 
-    
     def receive_one(self):
         
         return self.serial.read()

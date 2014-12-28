@@ -1,3 +1,4 @@
 Flask==0.10.1
 kiss==2.0.2
-
+pymongo
+redis-py

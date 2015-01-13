@@ -1,0 +1,29 @@
+.com-history {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+
+  .com-history-content {
+    flex-grow: 1;
+    margin-top: 10px;
+    border: 1px solid $light-border-color;
+    border-radius: 2px;
+    overflow: auto;
+
+    .com-history-item {
+      @extend .bottom-border;
+      display: flex;
+      line-height: 40px;
+      font-size: 1.2rem;
+
+      .com-history-item-time {
+        font-weight: bold;
+        padding: 0 7px 0;
+      }
+
+      .com-history-item-content {
+        padding: 0 4px 0;
+      }
+    }
+  }
+}

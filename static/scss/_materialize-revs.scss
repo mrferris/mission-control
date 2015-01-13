@@ -1,0 +1,24 @@
+ul.tabs {
+  .indicator {
+    background-color: $header-background-color;
+  }
+  a {
+    color: $header-background-color;
+    &:hover {
+      color: lighten($header-background-color, 20%);
+    }
+  }
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", Helvetica !important;
+}
+
+h1 {
+  font-size: 4.0rem;
+}
+

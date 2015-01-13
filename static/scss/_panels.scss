@@ -1,0 +1,70 @@
+$inner-container-height: 96%;
+$card-top-margin: 10px;
+$left-top-quadrant-height: 57%;
+$right-top-quadrant-height: 60%;
+
+body {
+  background-color: $background-color;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.app-container {
+  height: 100vh;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.quadrant {
+  padding: 8px;
+}
+
+.left-top-quadrant {
+  @extend .quadrant;
+  height: $left-top-quadrant-height;
+}
+
+.left-bottom-quadrant {
+  @extend .quadrant;
+  height: 100% - $left-top-quadrant-height;
+}
+
+.right-top-quadrant {
+  @extend .quadrant;
+  height: $right-top-quadrant-height;
+}
+
+.right-bottom-quadrant {
+  @extend .quadrant;
+  height: 100% - $right-top-quadrant-height;
+}
+
+.panel {
+  @extend .card;
+  margin: 0;
+  background-color: $panel-color;
+}
+
+.panel-header {
+  text-align: right;
+  background-color: $header-background-color;
+  color: $header-font-color;
+  font-size: 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.floated-images-in-flow {
+
+  &:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+}
+
+
+
+

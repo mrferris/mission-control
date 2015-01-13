@@ -1,0 +1,70 @@
+@import "settings";
+
+// Or selectively include components
+@import
+//   "foundation/components/accordion",
+//   "foundation/components/alert-boxes",
+//   "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+//   "foundation/components/buttons",
+//   "foundation/components/clearing",
+//   "foundation/components/dropdown",
+//   "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+//   "foundation/components/forms",
+   "foundation/components/grid";
+//   "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+//   "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+//   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+//   "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+//   "foundation/components/sub-nav",
+//   "foundation/components/switches";
+//   "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+//   "foundation/components/top-bar",
+//   "foundation/components/type",
+//   "foundation/components/offcanvas",
+//   "foundation/components/visibility";
+
+$panel-color: #FFF;
+$background-color: #90A4AE;
+$border-color: #37474F;
+$header-background-color: #283593;
+$header-font-color: #FFF;
+$light-border-color: #e0e0e0;
+$status-good-color: #00e676;
+$status-bad-color: red;
+$status-warning-color: #ffc107;
+
+@font-face {
+  font-family: Nasa;
+  src: url(../font/Nasa.ttf);
+}
+
+@import "font-awesome";
+@import "materialize";
+@import "borders";
+@import "status";
+@import "history";
+@import "panels";
+@import "title-panel";
+@import "switch";
+@import "camera-panel";
+@import "materialize-revs";
+@import "tabs";
+
+
+
+

@@ -1,0 +1,63 @@
+$image-width: 78%;
+
+.camera-panel {
+  display: flex;
+}
+
+.left-of-image {
+  float: left;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.satellite-image {
+  height: 100%;
+}
+
+.image-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.image-info-item-container {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.image-info-item {
+  something: something;
+}
+
+.time-taken {
+  @extend .image-info-item;
+  text-align: center;
+  margin: 0 auto;
+  i {
+    vertical-align: middle;
+  }
+}
+
+.position-taken {
+  @extend .image-info-item;
+  margin: 0 auto;
+  text-align: center;
+  i {
+    vertical-align: middle;
+  }
+}
+
+.switch {
+  @extend .image-info-item;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.toggle-switch {
+  text-align: left;
+  margin: 0 auto;
+}
+

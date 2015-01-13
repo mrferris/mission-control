@@ -1,0 +1,105 @@
+$battery-gauge-chart-height: 100px;
+$status-overview-height: 130px;
+
+.status-overview-panel-header {
+  .status-overview {
+    height: $status-overview-height;
+  }
+}
+
+.status-overview-header {
+  text-align: center;
+  line-height: $status-overview-height - $battery-gauge-chart-height;
+  font-size: 1.2rem;
+  height: $status-overview-height - $battery-gauge-chart-height;
+}
+
+.general-status-overview-header {
+  @extend .status-overview-header;
+  margin-bottom: 5px;
+}
+
+.system-time-section {
+  text-align: center;
+  height: ($status-overview-height / 2);
+  .system-time {
+    text-align: center;
+    font-size: 1.7rem;
+    line-height: 35px;
+  }
+  .system-time-subtext {
+    text-align: center;
+    font-size: .9rem;
+    line-height: 35px;
+  }
+}
+
+.gps-coords-section {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.5rem;
+  height: ($status-overview-height / 2);
+}
+
+.chart-wrapper {
+  padding: 10px;
+  margin: 15px auto 0;
+  &:last-of-type {
+    margin-bottom: 15px;
+  }
+}
+
+.chart-heading {
+  display: flex;
+  justify-content: space-between;
+
+  .chart-title {
+    font-size: 1.5rem;
+  }
+  .chart-status {
+  }
+}
+
+.chart-status-icon {
+  font-size: 2.5rem !important;
+}
+
+.chart-status-icon-good {
+  @extend .fa;
+  @extend .fa-check-circle;
+  @extend .chart-status-icon;
+  color: $status-good-color;
+}
+
+.chart-status-icon-bad {
+  @extend .fa;
+  @extend .fa-times-circle;
+  @extend .chart-status-icon;
+  color: $status-bad-color;
+}
+
+.chart-status-icon-warning {
+  @extend .fa;
+  @extend .fa-exclamation-triangle;
+  @extend .chart-status-icon;
+  color: $status-warning-color;
+}
+
+.full-width {
+  width: 95%;
+  margin: 15px auto 0;
+}
+
+.status-panel-header {
+  @extend .panel-header;
+  position: relative;
+  .last-updated {
+    font-size: 1rem;
+    height: 20px;
+    position: absolute;
+    bottom: 5px;
+  }
+}
+
+
+

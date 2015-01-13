@@ -44,7 +44,7 @@ def request_telemetry():
     pubsub = r.pubsub()
     pubsub.subscribe(request_type)
     for item in pubsub.listen():
-        if isinstance(item['data'],string):
+        if isinstance(item['data'],str):
             return item['data']
 
 

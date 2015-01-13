@@ -35,7 +35,7 @@ def request_telemetry():
 
     #Alert com thread to transmit telemetry request
     request_json = request.get_json()
-    request_type = request['requested_telem']
+    request_type = request.form['requested_telem']
     if request_type is None or request_type not in valid_telem_requests:
         return 100
 

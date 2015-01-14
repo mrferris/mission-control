@@ -32,13 +32,17 @@ function start_updating_status_data(key_map) {
             dataType : 'json',
             url: "beacon_update",
             cache: false,
-            success: function() {
+            success: function(json) {
+                console.log(json);
                 handle_beacon_data(json);
-                setTimeout(get_beacon_data, 1000);
+                setTimeout(get_beacon_data, 5000);
             },
             error: function(json,string,opt){
-                alert("JSON: "+json);
-                alert("String: "+string);
+                console.log(json);
+                console.log(string);
+                console.log(opt);
+//                alert("JSON: "+json);
+//                alert("String: "+string);
             }
         });
     })();
@@ -65,22 +69,33 @@ function start_updating_status_data(key_map) {
             adjusted_timestamp = adjust_beacon_timestamp(beacon_data.timestamp);
             datetime = new Date(adjusted_timestamp);
             $(system_time_selector).html(
-                    datetime.getHours + ":" + datetime.getMinutes() + ":" + datetime.getSeconds()
+                datetime.toTimeString().substring(0,8)
             );
             var updated_charts_set = new Set();
             for (category in beacon_data) {
-                for (key in beacon_data.category) {
-                    if (key_map.hasOwnProperty(category) && key_map.category.hasOwnProperty(key)) {
-                        add_chart_data_point(key_map.category.key, beacon_data.category.key);
-                        updated_charts_set.add(key_map.category.key.chart);
+                for (key in beacon_data[category]) {
+                    if (key_map.hasOwnProperty(category) && key_map[category].hasOwnProperty(key)) {
+                        console.log(category + key);
+                        if (key == 'ack') {
+                            ack_rate = 100 * (beacon_data[category][key] /
+                                    (beacon_data[category]['nack'] + beacon_data[category][key]));
+                            add_chart_data_point(key_map[category][key], ack_rate);
+                        } else {
+                            add_chart_data_point(key_map[category][key], beacon_data[category][key]);
+                        }
+                        updated_charts_set.add(key_map[category][key].chart);
                     }
                 }
             }
             var updated_charts_array = set_to_array(updated_charts_set);
             add_time_values_to_charts(updated_charts_array, datetime);
-            for (chart in updated_charts_array) {
-                chart.reload();
+            console.log(updated_charts_array);
+            for (index in updated_charts_array) {
+                console.log(index);
+                updated_charts_array[index].reload();
             }
+            current_datetime = new Date();
+            $("#last-updated-time").html(current_datetime.toTimeString().substring(0, 8));
         }
     }
 
@@ -93,9 +108,10 @@ function start_updating_status_data(key_map) {
     }
 
     function add_time_values_to_charts(charts, datetime) {
-        for (chart in charts) {
-            if (chart.c3ChartObject.data.x == 'time') {
-                chart.addValue('time', datetime);
+        for (index in charts) {
+            console.log(charts[index].c3ChartObject);
+            if (charts[index].chartSpecs.data.x == 'time') {
+                charts[index].addValue('time', datetime);
             }
         }
     }
@@ -111,7 +127,7 @@ function set_to_array(set) {
 }
 
 // Add back constant value that was subtracted on the server
-function adjust_beacon_timestamp() {
+function adjust_beacon_timestamp(timestamp) {
     const adjustment = 1234567890;
     return timestamp + adjustment;
 }
@@ -288,7 +304,7 @@ function init_charts() {
         bindto: '#battery-voltage-gauge-chart',
         data: {
             columns: [
-                ['Voltage', 84]
+                ['Voltage']
             ],
             type: 'gauge'
         },
@@ -551,7 +567,7 @@ function init_charts() {
     solar_panel_voltage_chart.generate();
     size_refreshing_charts[size_refreshing_charts.length] = solar_panel_voltage_chart;
 
-    battery_current_chart = new Chart({
+    var battery_current_chart = new Chart({
         bindto: '#battery-current-chart',
         data: {
             x: 'time',
@@ -590,13 +606,13 @@ function init_charts() {
     battery_current_chart.generate();
     size_refreshing_charts[size_refreshing_charts.length] = battery_current_chart;
 
-    device_current_chart = new Chart({
+    var device_current_chart = new Chart({
         bindto: '#device-current-chart',
         data: {
             x: 'time',
             columns: [
                 ['time'],
-                ['Reaction Wheel'],
+                ['Reaction Wheels'],
                 ['Visible Camera'],
                 ['Infrared Camera']
             ]
@@ -839,11 +855,6 @@ function init_charts() {
         visible_cam_temp_chart.addValue('Lens 2', 78);
         visible_cam_temp_chart.reload();
         }, 2500);
-
-    setTimeout(function() {
-        battery_voltage_chart.setValue('Voltage', 91);
-        battery_voltage_chart.reload();
-    }, 1000);
 
     resize_charts(size_refreshing_charts);
     $(document).on('tabChange', function() {

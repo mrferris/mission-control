@@ -52,10 +52,10 @@ function start_updating_status_data(key_map) {
         if (beacon_data.hasOwnProperty('adc')) {
             adc_data = beacon_data.adc;
             if (adc_data.hasOwnProperty('latitude')) {
-                $(gps_latitude_selector).html(adc_data.latitude);
+                $(gps_latitude_selector).html(adc_data.latitude + '&deg;');
             }
             if (adc_data.hasOwnProperty('longitude')) {
-                $(gps_longitude_selector).html(adc_data.longitude);
+                $(gps_longitude_selector).html(adc_data.longitude + '&deg;');
             }
         } else {
             console.log("Beacon data does not contain ADC data");
@@ -67,17 +67,18 @@ function start_updating_status_data(key_map) {
             $(system_time_selector).html(
                     datetime.getHours + ":" + datetime.getMinutes() + ":" + datetime.getSeconds()
             );
-            var updated_charts = new Set();
+            var updated_charts_set = new Set();
             for (category in beacon_data) {
                 for (key in beacon_data.category) {
                     if (key_map.hasOwnProperty(category) && key_map.category.hasOwnProperty(key)) {
                         add_chart_data_point(key_map.category.key, beacon_data.category.key);
-                        updated_charts.add(key_map.category.key.chart);
+                        updated_charts_set.add(key_map.category.key.chart);
                     }
                 }
             }
-            add_timestamps_to_charts(updated_charts, datetime);
-            for (chart in updated_charts) {
+            var updated_charts_array = set_to_array(updated_charts_set);
+            add_time_values_to_charts(updated_charts_array, datetime);
+            for (chart in updated_charts_array) {
                 chart.reload();
             }
         }
@@ -87,13 +88,22 @@ function start_updating_status_data(key_map) {
         key_mapping.chart.addValue(key_mapping.chart.columnName, value);
     }
 
-    function add_timestamps_to_charts(charts, datetime) {
+    function add_time_values_to_charts(charts, datetime) {
         for (chart in charts) {
             if (chart.c3ChartObject.data.x == 'time') {
                 chart.addValue('time', datetime);
             }
         }
     }
+}
+
+function set_to_array(set) {
+    var iterator = set.values();
+    var ret = [];
+    while(!(i = iterator.next()).done) {
+        ret.push(i.value);
+    }
+    return ret;
 }
 
 // Add back constant value that was subtracted on the server

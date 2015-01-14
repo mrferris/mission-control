@@ -49,6 +49,9 @@ function init_charts() {
     Chart.prototype.addValue = function(columnName, value) {
         this.getColumn(columnName).push(value)
     };
+    Chart.prototype.setValue = function(columnName, value) {
+        this.getColumn(columnName)[1] = value;
+    };
     Chart.prototype.getColumn = function(columnName) {
         for (index in this.columns) {
             if (this.columns[index][0] == columnName) {
@@ -106,6 +109,9 @@ function init_charts() {
                 }
             }
         },
+        padding: {
+            right: 20
+        },
         legend: {
             show: false
         }
@@ -154,6 +160,9 @@ function init_charts() {
                 }
             }
         },
+        padding: {
+            right: 20
+        },
         legend: {
             show: false
         }
@@ -188,7 +197,7 @@ function init_charts() {
         bindto: '#battery-voltage-gauge-chart',
         data: {
             columns: [
-                ['Storage Used', 84]
+                ['Voltage', 84]
             ],
             type: 'gauge'
         },
@@ -229,17 +238,21 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     visible_cam_temp_chart.generate();
+    $('#visible-cam-temp-chart').data('c3', visible_cam_temp_chart);
     size_refreshing_charts[size_refreshing_charts.length] = visible_cam_temp_chart;
 
     var infrared_cam_temp_chart = new Chart({
@@ -270,6 +283,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     infrared_cam_temp_chart.generate();
@@ -304,6 +320,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     other_parts_temp_chart.generate();
@@ -340,6 +359,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_temp_chart.generate();
@@ -376,6 +398,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_current_chart.generate();
@@ -412,6 +437,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_voltage_chart.generate();
@@ -445,6 +473,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     battery_current_chart.generate();
@@ -478,6 +509,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     device_current_chart.generate();
@@ -511,6 +545,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     reaction_wheel_torque_chart.generate();
@@ -544,6 +581,9 @@ function init_charts() {
                     right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     magnetometer_reading_chart.generate();
@@ -615,7 +655,10 @@ function init_charts() {
                     right: 1
                 }
             }
-        }
+        },
+        padding: {
+            right: 20
+        },
     });
     rssi_chart.generate();
     size_refreshing_charts[size_refreshing_charts.length] = rssi_chart;
@@ -642,13 +685,41 @@ function init_charts() {
     });
     packet_ack_rate_chart.generate();
 
+    // disable x axis clipping
+    d3.select('.c3-axis.c3-axis-x').attr('clip-path', "");
+
+    var time1 = 1421192626000;
     setTimeout(function() {
-        visible_cam_temp_chart.addValue('time', 15);
+        // time is in milliseconds since 19:00:00 Dec 31 1969
+        visible_cam_temp_chart.addValue('time', time1);
         visible_cam_temp_chart.addValue('Camera', 90);
         visible_cam_temp_chart.addValue('Lens 1', 88);
         visible_cam_temp_chart.addValue('Lens 2', 78);
         visible_cam_temp_chart.reload();
-        }, 2000);
+        }, 500);
+
+    setTimeout(function() {
+        // time is in milliseconds since 19:00:00 Dec 31 1969
+        visible_cam_temp_chart.addValue('time', time1 + 10000);
+        visible_cam_temp_chart.addValue('Camera', 90);
+        visible_cam_temp_chart.addValue('Lens 1', 88);
+        visible_cam_temp_chart.addValue('Lens 2', 78);
+        visible_cam_temp_chart.reload();
+        }, 1500);
+
+    setTimeout(function() {
+        // time is in milliseconds since 19:00:00 Dec 31 1969
+        visible_cam_temp_chart.addValue('time', time1 + 20000);
+        visible_cam_temp_chart.addValue('Camera', 90);
+        visible_cam_temp_chart.addValue('Lens 1', 88);
+        visible_cam_temp_chart.addValue('Lens 2', 78);
+        visible_cam_temp_chart.reload();
+        }, 2500);
+
+    setTimeout(function() {
+        battery_voltage_chart.setValue('Voltage', 91);
+        battery_voltage_chart.reload();
+    }, 1000);
 
     resize_charts(size_refreshing_charts);
     $(document).on('tabChange', function() {

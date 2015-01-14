@@ -34,7 +34,7 @@ function start_updating_status_data(key_map) {
             cache: false,
             success: function() {
                 handle_beacon_data(json);
-                setTimeout(get_beacon_data, 1);
+                setTimeout(get_beacon_data, 1000);
             },
             error: function(json,string,opt){
                 alert("JSON: "+json);
@@ -60,18 +60,37 @@ function start_updating_status_data(key_map) {
         } else {
             console.log("Beacon data does not contain ADC data");
         }
+        var datetime = null;
         if (beacon_data.hasOwnProperty('timestamp')) {
             adjusted_timestamp = adjust_beacon_timestamp(beacon_data.timestamp);
+            datetime = new Date(adjusted_timestamp);
+            $(system_time_selector).html(
+                    datetime.getHours + ":" + datetime.getMinutes() + ":" + datetime.getSeconds()
+            );
+            var updated_charts = new Set();
+            for (category in beacon_data) {
+                for (key in beacon_data.category) {
+                    if (key_map.hasOwnProperty(category) && key_map.category.hasOwnProperty(key)) {
+                        add_chart_data_point(key_map.category.key, beacon_data.category.key);
+                        updated_charts.add(key_map.category.key.chart);
+                    }
+                }
+            }
+            add_timestamps_to_charts(updated_charts, datetime);
+            for (chart in updated_charts) {
+                chart.reload();
+            }
         }
     }
 
-    function update_data(category) {
-        // see if we need to update a chart
-        if (key_map.hasOwnProperty(category)) {
+    function add_chart_data_point(key_mapping, value) {
+        key_mapping.chart.addValue(key_mapping.chart.columnName, value);
+    }
 
-        } else {
-            if (category == "timestamp") {
-
+    function add_timestamps_to_charts(charts, datetime) {
+        for (chart in charts) {
+            if (chart.c3ChartObject.data.x == 'time') {
+                chart.addValue('time', datetime);
             }
         }
     }

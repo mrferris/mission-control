@@ -2,7 +2,7 @@ $(document).ready(function() {
     adjust_div_heights();
     $('ul.tabs').tabs();
     $('.tooltipped').tooltip({'delay': 50});
-    init_charts();
+    json_key_chart_map = init_charts();
 });
 
 $(window).resize(function() {
@@ -25,14 +25,8 @@ function fill_remaining_height(parent_div_selector, top_div_selector, div_select
     }
 }
 
+// Creates charts and returns a mapping of json keys to chart objects and column names
 function init_charts() {
-
-    ChartType = {
-        LINE : 'line',
-        STEP : 'step',
-        AREA_STEP : 'area-step',
-        GAUGE : 'gauge'
-    };
 
     function Chart(chartSpecs) {
         this.chartSpecs = chartSpecs;

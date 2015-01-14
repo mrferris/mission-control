@@ -3,11 +3,12 @@ $(document).ready(function() {
     $('ul.tabs').tabs();
     $('.tooltipped').tooltip({'delay': 50});
     json_key_chart_map = init_charts();
+
+    start_updating_status_data(json_key_chart_map);
 });
 
 $(window).resize(function() {
     adjust_div_heights();
-//    resize_charts();
 });
 
 function adjust_div_heights() {
@@ -23,6 +24,63 @@ function fill_remaining_height(parent_div_selector, top_div_selector, div_select
         top_div_height = parent.find(top_div_selector).height();
         parent.find(div_selector).height(parent_height - top_div_height);
     }
+}
+
+function start_updating_status_data(key_map) {
+    (function get_beacon_data() {
+        $.ajax({
+            dataType : 'json',
+            url: "beacon_update",
+            cache: false,
+            success: function() {
+                handle_beacon_data(json);
+                setTimeout(get_beacon_data, 1);
+            },
+            error: function(json,string,opt){
+                alert("JSON: "+json);
+                alert("String: "+string);
+            }
+        });
+    })();
+
+    const system_time_selector = "#system-time";
+    const gps_latitude_selector = "#latitude";
+    const gps_longitude_selector = "#longitude";
+
+    // adjust system time, gps coords, charts, and last updated time
+    function handle_beacon_data(beacon_data) {
+        if (beacon_data.hasOwnProperty('adc')) {
+            adc_data = beacon_data.adc;
+            if (adc_data.hasOwnProperty('latitude')) {
+                $(gps_latitude_selector).html(adc_data.latitude);
+            }
+            if (adc_data.hasOwnProperty('longitude')) {
+                $(gps_longitude_selector).html(adc_data.longitude);
+            }
+        } else {
+            console.log("Beacon data does not contain ADC data");
+        }
+        if (beacon_data.hasOwnProperty('timestamp')) {
+            adjusted_timestamp = adjust_beacon_timestamp(beacon_data.timestamp);
+        }
+    }
+
+    function update_data(category) {
+        // see if we need to update a chart
+        if (key_map.hasOwnProperty(category)) {
+
+        } else {
+            if (category == "timestamp") {
+
+            }
+        }
+    }
+}
+
+// Add back constant value that was subtracted on the server
+function adjust_beacon_timestamp() {
+    const adjustment = 1234567890;
+    return timestamp + adjustment;
 }
 
 // Creates charts and returns a mapping of json keys to chart objects and column names
@@ -762,8 +820,7 @@ function init_charts() {
         resize_charts(size_refreshing_charts);
     });
 
-    const json_key_mapping = [
-        {
+    return {
             "thermal": {
                 "vis_cam": {
                     "chart": visible_cam_temp_chart,
@@ -800,9 +857,7 @@ function init_charts() {
                     "columnName": "Reaction Wheels",
                     "gauge": false
                 }
-            }
-        },
-        {
+            },
             "power": {
                 "+x_current": {
                     "chart": solar_panel_current_chart,
@@ -899,9 +954,7 @@ function init_charts() {
                     "columnName": "Infrared Camera",
                     "gauge": false
                 }
-            }
-        },
-        {
+            },
             "adc": {
                 "rxn_x_torque": {
                     "chart": reaction_wheel_torque_chart,
@@ -978,9 +1031,7 @@ function init_charts() {
                     "gauge": true
                 }
             }
-        }
-    ];
-
+        };
 }
 
 function resize_charts(chart_list) {

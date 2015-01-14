@@ -16,8 +16,8 @@
 	    setTimeout(beacon_update,1);
 	},
 	error: function(json,string,opt){
-	    alert("JSON: "+json)
-	    alert("String: "+string)
+	    alert("JSON: "+json);
+	    alert("String: "+string);
 	}
 	
 	});

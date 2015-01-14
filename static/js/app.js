@@ -85,7 +85,11 @@ function start_updating_status_data(key_map) {
     }
 
     function add_chart_data_point(key_mapping, value) {
-        key_mapping.chart.addValue(key_mapping.chart.columnName, value);
+        if (key_mapping.gauge) {
+            key_mapping.chart.setValue(key_mapping.columnName, value);
+        } else {
+            key_mapping.chart.addValue(key_mapping.columnName, value);
+        }
     }
 
     function add_time_values_to_charts(charts, datetime) {
@@ -884,6 +888,21 @@ function init_charts() {
                 "rxn_wheels": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Reaction Wheels",
+                    "gauge": false
+                },
+                "battery": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "Battery",
+                    "gauge": false
+                },
+                "csk_stack": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "CSK Stack",
+                    "gauge": false
+                },
+                "edison_stack": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "Edison Stack",
                     "gauge": false
                 }
             },

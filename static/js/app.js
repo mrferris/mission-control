@@ -75,7 +75,6 @@ function start_updating_status_data(key_map) {
             for (category in beacon_data) {
                 for (key in beacon_data[category]) {
                     if (key_map.hasOwnProperty(category) && key_map[category].hasOwnProperty(key)) {
-                        console.log(category + key);
                         if (key == 'ack') {
                             ack_rate = 100 * (beacon_data[category][key] /
                                     (beacon_data[category]['nack'] + beacon_data[category][key]));
@@ -89,9 +88,7 @@ function start_updating_status_data(key_map) {
             }
             var updated_charts_array = set_to_array(updated_charts_set);
             add_time_values_to_charts(updated_charts_array, datetime);
-            console.log(updated_charts_array);
             for (index in updated_charts_array) {
-                console.log(index);
                 updated_charts_array[index].reload();
             }
             current_datetime = new Date();
@@ -724,6 +721,9 @@ function init_charts() {
                     position: 'outer-center'
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     magnetorquer_current_chart.generate();
@@ -853,6 +853,36 @@ function init_charts() {
                 "edison_stack": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Edison Stack",
+                    "gauge": false
+                },
+                "+y_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "Y Panel",
+                    "gauge": false
+                },
+                "-y_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-Y Panel",
+                    "gauge": false
+                },
+                "+x_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "X Panel",
+                    "gauge": false
+                },
+                "-x_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-X Panel",
+                    "gauge": false
+                },
+                "+z_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "Z Panel",
+                    "gauge": false
+                },
+                "-z_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-Z Panel",
                     "gauge": false
                 }
             },

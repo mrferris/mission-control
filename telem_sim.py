@@ -79,9 +79,9 @@ def sim_power_data():
 
 def sim_cdh_data():
     cdh_data = {}
-    cdh_data['cpu_usage'] = random_float(0, 100, 1)
-    cdh_data['memory_usage'] = random_float(0, 100, 1)
-    cdh_data['storage_usage'] = random_float(0, 100, 1)
+    cdh_data['cpu_usage'] = random_float(0, 1, 2)
+    cdh_data['memory_usage'] = random_float(0, 1, 2)
+    cdh_data['storage_usage'] = random_float(0, 100, 2)
     return cdh_data
 
 def sim_adc_data():

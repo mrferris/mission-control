@@ -388,9 +388,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -428,9 +425,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -470,9 +464,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -512,9 +503,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -554,9 +542,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -593,9 +578,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -632,9 +614,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -671,9 +650,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -710,9 +686,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },
@@ -749,9 +722,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         }
@@ -790,9 +760,6 @@ function init_charts() {
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
         },

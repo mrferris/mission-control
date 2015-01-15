@@ -10,8 +10,7 @@
       "battery_voltage": 44, "5v_current": 0.0, "3v3_current": 0.0, "12v_current": 0.0,
       "rxn_current": 0.0, "vis_cam_current": 0.0, "inf_cam_current": 0.0},
  "adc":
-     {"latitude": 0.0, "longitude": 0.0, "rxn_x_torque": 0.0, "rxn_y_torque": 0.0, "rxn_z_torque": 0.0,
-      "magnetometer_x": 0.0, "magnetometer_y": 0.0, "magnetometer_z": 0.0,
+     {"rxn_x_torque": 0.0, "rxn_y_torque": 0.0, "rxn_z_torque": 0.0
       "magnetorquer_x_current": 0.0, "magnetorquer_y_current": 0.0, "magnetorquer_z_current": 0.0},
  "cdh":
      {"cpu_usage": "first few lines of top command?", "memory_usage": [0.0, 0.0, 0.0], "storage_usage": 0.0},

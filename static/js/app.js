@@ -128,7 +128,7 @@ function set_to_array(set) {
 
 // Add back constant value that was subtracted on the server
 function adjust_beacon_timestamp(timestamp) {
-    const adjustment = 1234567890;
+    const adjustment = 0;
     return timestamp + adjustment;
 }
 
@@ -827,34 +827,6 @@ function init_charts() {
 
     // disable x axis clipping
     d3.select('.c3-axis.c3-axis-x').attr('clip-path', "");
-
-    var time1 = 1421192626000;
-    setTimeout(function() {
-        // time is in milliseconds since 19:00:00 Dec 31 1969
-        visible_cam_temp_chart.addValue('time', time1);
-        visible_cam_temp_chart.addValue('Camera', 90);
-        visible_cam_temp_chart.addValue('Lens 1', 88);
-        visible_cam_temp_chart.addValue('Lens 2', 78);
-        visible_cam_temp_chart.reload();
-        }, 500);
-
-    setTimeout(function() {
-        // time is in milliseconds since 19:00:00 Dec 31 1969
-        visible_cam_temp_chart.addValue('time', time1 + 10000);
-        visible_cam_temp_chart.addValue('Camera', 90);
-        visible_cam_temp_chart.addValue('Lens 1', 88);
-        visible_cam_temp_chart.addValue('Lens 2', 78);
-        visible_cam_temp_chart.reload();
-        }, 1500);
-
-    setTimeout(function() {
-        // time is in milliseconds since 19:00:00 Dec 31 1969
-        visible_cam_temp_chart.addValue('time', time1 + 20000);
-        visible_cam_temp_chart.addValue('Camera', 90);
-        visible_cam_temp_chart.addValue('Lens 1', 88);
-        visible_cam_temp_chart.addValue('Lens 2', 78);
-        visible_cam_temp_chart.reload();
-        }, 2500);
 
     resize_charts(size_refreshing_charts);
     $(document).on('tabChange', function() {

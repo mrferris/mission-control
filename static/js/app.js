@@ -15,6 +15,7 @@ function adjust_div_heights() {
     fill_remaining_height(".panel", ".panel-header", ".panel-content");
     fill_remaining_height(".panel-content", ".status-overview-panel-header", ".tab-content");
     fill_remaining_height(".com-history", ".com-history-header", ".com-history-content");
+    fill_remaining_height(".tab-content", ".tabs", ".subtab-content");
 }
 
 function fill_remaining_height(parent_div_selector, top_div_selector, div_selector) {

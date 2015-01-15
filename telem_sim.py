@@ -11,7 +11,7 @@ except IndexError:
 
 @app.route("/")
 def index():
-    return render_template("index.jinja")
+    return render_template("index.jinja2")
 
 @app.route("/beacon_update")
 def beacon_update():

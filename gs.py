@@ -13,7 +13,7 @@ r = redis.Redis('localhost')
 @app.route("/index")
 def welcome():
 
-    return render_template('index.jinja')
+    return render_template('index.jinja2')
 
 
 #GET for telemetry beacon updates. Called via ajax.

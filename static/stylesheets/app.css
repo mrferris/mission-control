@@ -15573,46 +15573,51 @@ ul.tabs a:hover {
 }
 
 /* line 13, ../scss/_materialize-revs.scss */
+.no-max-width {
+  max-width: none !important;
+}
+
+/* line 17, ../scss/_materialize-revs.scss */
 .no-padding {
   padding: 0 !important;
 }
 
-/* line 17, ../scss/_materialize-revs.scss */
+/* line 21, ../scss/_materialize-revs.scss */
 body {
   font-family: Roboto, "Helvetica Neue", Helvetica !important;
 }
 
-/* line 21, ../scss/_materialize-revs.scss */
+/* line 25, ../scss/_materialize-revs.scss */
 h1 {
   font-size: 4.0rem;
 }
 
-/* line 1, ../scss/_tabs.scss */
-.tab-content {
+/* line 5, ../scss/_tabs.scss */
+.overflow-auto {
   overflow: auto;
 }
 
-/* line 7, ../scss/_tabs.scss */
+/* line 11, ../scss/_tabs.scss */
 ul.tabs li.tab.good a {
   color: #00e676 !important;
 }
-/* line 9, ../scss/_tabs.scss */
+/* line 13, ../scss/_tabs.scss */
 ul.tabs li.tab.good a:hover {
   color: #4dffa8 !important;
 }
-/* line 17, ../scss/_tabs.scss */
+/* line 21, ../scss/_tabs.scss */
 ul.tabs li.tab.bad a {
   color: red !important;
 }
-/* line 19, ../scss/_tabs.scss */
+/* line 23, ../scss/_tabs.scss */
 ul.tabs li.tab.bad a:hover {
   color: #ff6666 !important;
 }
-/* line 26, ../scss/_tabs.scss */
+/* line 30, ../scss/_tabs.scss */
 ul.tabs li.tab.warning a {
   color: #ffc107 !important;
 }
-/* line 28, ../scss/_tabs.scss */
+/* line 32, ../scss/_tabs.scss */
 ul.tabs li.tab.warning a:hover {
   color: #ffdb6d !important;
 }

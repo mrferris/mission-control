@@ -5,3 +5,7 @@ To initialize vagrant environment, you must first install <a href="http://www.va
 </a> and <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox</a> on your computer. Then, run the command 
 `vagrant up` in the root project directory. When that finishes running (should take a few minutes), run `vagrant ssh` 
 to ssh into the vagrant machine.
+<h2>Telemetry Simulation</h2>
+To simulate receiving telemetry data, first ssh into your vagrant machine, then `cd /vagrant`. Run
+`python telem_sim.py <i>secondsBetweenBeacons</i>` where <i>secondsBetweenBeacons</i> is an optional argument specifying
+the frequency of beacons.

@@ -1,9 +1,13 @@
 from flask import Flask, render_template
-import time, json, random
+import time, json, random, sys
 
 app = Flask(__name__)
 
 random.seed(int(time.time()))
+try:
+    seconds_between_telemetry_beacons = int(sys.argv[1])
+except IndexError:
+    seconds_between_telemetry_beacons = 1
 
 @app.route("/")
 def index():
@@ -11,7 +15,7 @@ def index():
 
 @app.route("/beacon_update")
 def beacon_update():
-    while(int(time.time())%1 != 0):
+    while(int(time.time())%seconds_between_telemetry_beacons != 0):
         pass
     time.sleep(1)
     telem_sim_json_dict = generate_sim_data()

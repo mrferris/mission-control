@@ -14,6 +14,7 @@ $(window).resize(function() {
 function adjust_div_heights() {
     fill_remaining_height(".panel", ".panel-header", ".panel-content");
     fill_remaining_height(".panel-content", ".status-overview-panel-header", ".tab-content");
+    fill_remaining_height(".com-history", ".com-history-header", ".com-history-content");
 }
 
 function fill_remaining_height(parent_div_selector, top_div_selector, div_selector) {
@@ -26,6 +27,30 @@ function fill_remaining_height(parent_div_selector, top_div_selector, div_select
     }
 }
 
+function update_feed(text) {
+    d = new Date();
+    var timestring = d.toTimeString().substring(0, 8);
+    add_com_history_item(timestring, text);
+}
+
+const TELEM_BEACON = "Telemetry Beacon Received";
+
+function add_com_history_item(time, text) {
+    $('#com-history-items').prepend(generate_com_history_item(time, text));
+}
+
+function generate_com_history_item(time, text) {
+    var com_history_item = '<div class="com-history-item">';
+    com_history_item += '<div class="com-history-item-time">';
+    com_history_item += time;
+    com_history_item += '</div>';
+    com_history_item += '<div class="com-history-item-content">';
+    com_history_item += text;
+    com_history_item += '</div>';
+    com_history_item += '</div>';
+    return com_history_item;
+}
+
 function start_updating_status_data(key_map) {
     (function get_beacon_data() {
         $.ajax({
@@ -33,16 +58,14 @@ function start_updating_status_data(key_map) {
             url: "beacon_update",
             cache: false,
             success: function(json) {
-                console.log(json);
                 handle_beacon_data(json);
+                update_feed(TELEM_BEACON);
                 setTimeout(get_beacon_data, 500);
             },
             error: function(json,string,opt){
                 console.log(json);
                 console.log(string);
                 console.log(opt);
-//                alert("JSON: "+json);
-//                alert("String: "+string);
             }
         });
     })();
@@ -137,7 +160,7 @@ function init_charts() {
         this.selector = chartSpecs.bindto;
         this.c3ChartObject = {};
         this.columns = this.chartSpecs.data.columns;
-        this.maxVisibleDataPoints = maxVisibleDataPoints || 7
+        this.maxVisibleDataPoints = maxVisibleDataPoints || 6
     }
     Chart.prototype.generate = function() {
         this.c3ChartObject = c3.generate(this.chartSpecs);

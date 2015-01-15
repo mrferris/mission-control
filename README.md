@@ -7,5 +7,5 @@ To initialize vagrant environment, you must first install <a href="http://www.va
 to ssh into the vagrant machine.
 <h2>Telemetry Simulation</h2>
 To simulate receiving telemetry data, first ssh into your vagrant machine, then `cd /vagrant`. Run
-`python telem_sim.py *secondsBetweenBeacons*>` where *secondsBetweenBeacons* is an optional argument specifying
+`python telem_sim.py `*`secondsBetweenBeacons`* where *secondsBetweenBeacons* is an optional argument specifying
 the frequency of beacons.

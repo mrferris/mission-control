@@ -2,12 +2,13 @@ $(document).ready(function() {
     adjust_div_heights();
     $('ul.tabs').tabs();
     $('.tooltipped').tooltip({'delay': 50});
-    init_charts();
+    json_key_chart_map = init_charts();
+
+    start_updating_status_data(json_key_chart_map);
 });
 
 $(window).resize(function() {
     adjust_div_heights();
-//    resize_charts();
 });
 
 function adjust_div_heights() {
@@ -25,20 +26,118 @@ function fill_remaining_height(parent_div_selector, top_div_selector, div_select
     }
 }
 
+function start_updating_status_data(key_map) {
+    (function get_beacon_data() {
+        $.ajax({
+            dataType : 'json',
+            url: "beacon_update",
+            cache: false,
+            success: function(json) {
+                console.log(json);
+                handle_beacon_data(json);
+                setTimeout(get_beacon_data, 500);
+            },
+            error: function(json,string,opt){
+                console.log(json);
+                console.log(string);
+                console.log(opt);
+//                alert("JSON: "+json);
+//                alert("String: "+string);
+            }
+        });
+    })();
+
+    const system_time_selector = "#system-time";
+    const gps_latitude_selector = "#latitude";
+    const gps_longitude_selector = "#longitude";
+
+    // adjust system time, gps coords, charts, and last updated time
+    function handle_beacon_data(beacon_data) {
+        if (beacon_data.hasOwnProperty('adc')) {
+            adc_data = beacon_data.adc;
+            if (adc_data.hasOwnProperty('latitude')) {
+                $(gps_latitude_selector).html(adc_data.latitude + '&deg;');
+            }
+            if (adc_data.hasOwnProperty('longitude')) {
+                $(gps_longitude_selector).html(adc_data.longitude + '&deg;');
+            }
+        } else {
+            console.log("Beacon data does not contain ADC data");
+        }
+        var datetime = null;
+        if (beacon_data.hasOwnProperty('timestamp')) {
+            adjusted_timestamp = adjust_beacon_timestamp(beacon_data.timestamp);
+            datetime = new Date(adjusted_timestamp);
+            $(system_time_selector).html(
+                datetime.toTimeString().substring(0,8)
+            );
+            var updated_charts_set = new Set();
+            for (category in beacon_data) {
+                for (key in beacon_data[category]) {
+                    if (key_map.hasOwnProperty(category) && key_map[category].hasOwnProperty(key)) {
+                        if (key == 'ack') {
+                            ack_rate = 100 * (beacon_data[category][key] /
+                                    (beacon_data[category]['nack'] + beacon_data[category][key]));
+                            add_chart_data_point(key_map[category][key], ack_rate);
+                        } else {
+                            add_chart_data_point(key_map[category][key], beacon_data[category][key]);
+                        }
+                        updated_charts_set.add(key_map[category][key].chart);
+                    }
+                }
+            }
+            var updated_charts_array = set_to_array(updated_charts_set);
+            add_time_values_to_charts(updated_charts_array, datetime);
+            for (index in updated_charts_array) {
+                updated_charts_array[index].reload();
+            }
+            current_datetime = new Date();
+            $("#last-updated-time").html(current_datetime.toTimeString().substring(0, 8));
+        }
+    }
+
+    function add_chart_data_point(key_mapping, value) {
+        if (key_mapping.gauge) {
+            key_mapping.chart.setValue(key_mapping.columnName, value);
+        } else {
+            key_mapping.chart.addValue(key_mapping.columnName, value);
+        }
+    }
+
+    function add_time_values_to_charts(charts, datetime) {
+        for (index in charts) {
+            console.log(charts[index].c3ChartObject);
+            if (charts[index].chartSpecs.data.x == 'time') {
+                charts[index].addValue('time', datetime);
+            }
+        }
+    }
+}
+
+function set_to_array(set) {
+    var iterator = set.values();
+    var ret = [];
+    while(!(i = iterator.next()).done) {
+        ret.push(i.value);
+    }
+    return ret;
+}
+
+// Add back constant value that was subtracted on the server
+function adjust_beacon_timestamp(timestamp) {
+    const adjustment = 0;
+    return timestamp + adjustment;
+}
+
+// Creates charts and returns a mapping of json keys to chart objects and column names
 function init_charts() {
 
-    ChartType = {
-        LINE : 'line',
-        STEP : 'step',
-        AREA_STEP : 'area-step',
-        GAUGE : 'gauge'
-    };
-
-    function Chart(chartSpecs) {
+    function Chart(chartSpecs, maxVisibleDataPoints) {
         this.chartSpecs = chartSpecs;
         this.selector = chartSpecs.bindto;
         this.c3ChartObject = {};
         this.columns = this.chartSpecs.data.columns;
+        this.maxVisibleDataPoints = maxVisibleDataPoints || 7
     }
     Chart.prototype.generate = function() {
         this.c3ChartObject = c3.generate(this.chartSpecs);
@@ -48,6 +147,20 @@ function init_charts() {
     };
     Chart.prototype.addValue = function(columnName, value) {
         this.getColumn(columnName).push(value)
+    };
+    Chart.prototype.setValue = function(columnName, value) {
+        this.getColumn(columnName)[1] = value;
+    };
+    Chart.prototype.visibleColumns = function() {
+        var visibleColumns = [];
+        for (index in this.columns) {
+            var columnName = this.columns[index][0];
+            var visibleDataPoints = this.columns[index].slice(Math.max(1, this.columns[index].length - this.maxVisibleDataPoints),
+                                                              this.columns[index].length);
+            var visibleColumn = [columnName].concat(visibleDataPoints);
+            visibleColumns.push(visibleColumn);
+        }
+        return visibleColumns
     };
     Chart.prototype.getColumn = function(columnName) {
         for (index in this.columns) {
@@ -59,7 +172,7 @@ function init_charts() {
     };
     Chart.prototype.reload = function() {
         this.c3ChartObject.load({
-            columns: this.columns
+            columns: this.visibleColumns()
         })
     };
 
@@ -96,15 +209,20 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
                 },
                 padding: {
-                    left: 0,
-                    right: 1
+                    left: 0
                 }
             }
+        },
+        padding: {
+            right: 20
         },
         legend: {
             show: false
@@ -144,15 +262,20 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
                 },
                 padding: {
-                    left: 0,
-                    right: 1
+                    left: 0
                 }
             }
+        },
+        padding: {
+            right: 20
         },
         legend: {
             show: false
@@ -165,7 +288,7 @@ function init_charts() {
         bindto: '#storage-usage-chart',
         data: {
             columns: [
-                ['data', 91.4]
+                ['Storage Used', 91.4]
             ],
             type: 'gauge'
         },
@@ -188,7 +311,7 @@ function init_charts() {
         bindto: '#battery-voltage-gauge-chart',
         data: {
             columns: [
-                ['Storage Used', 84]
+                ['Voltage']
             ],
             type: 'gauge'
         },
@@ -229,17 +352,21 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     visible_cam_temp_chart.generate();
+    $('#visible-cam-temp-chart').data('c3', visible_cam_temp_chart);
     size_refreshing_charts[size_refreshing_charts.length] = visible_cam_temp_chart;
 
     var infrared_cam_temp_chart = new Chart({
@@ -262,14 +389,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     infrared_cam_temp_chart.generate();
@@ -296,14 +426,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {  
+                    format: "%H:%M:%S"  
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     other_parts_temp_chart.generate();
@@ -332,14 +465,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_temp_chart.generate();
@@ -368,14 +504,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_current_chart.generate();
@@ -404,20 +543,23 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     solar_panel_voltage_chart.generate();
     size_refreshing_charts[size_refreshing_charts.length] = solar_panel_voltage_chart;
 
-    battery_current_chart = new Chart({
+    var battery_current_chart = new Chart({
         bindto: '#battery-current-chart',
         data: {
             x: 'time',
@@ -437,26 +579,29 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     battery_current_chart.generate();
     size_refreshing_charts[size_refreshing_charts.length] = battery_current_chart;
 
-    device_current_chart = new Chart({
+    var device_current_chart = new Chart({
         bindto: '#device-current-chart',
         data: {
             x: 'time',
             columns: [
                 ['time'],
-                ['Reaction Wheel'],
+                ['Reaction Wheels'],
                 ['Visible Camera'],
                 ['Infrared Camera']
             ]
@@ -470,14 +615,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     device_current_chart.generate();
@@ -503,14 +651,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     reaction_wheel_torque_chart.generate();
@@ -536,14 +687,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     magnetometer_reading_chart.generate();
@@ -569,14 +723,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     magnetorquer_current_chart.generate();
@@ -607,14 +764,17 @@ function init_charts() {
             },
             x: {
                 type: 'timeseries',
+                tick: {
+                    format: "%H:%M:%S"
+                },
                 label: {
                     text: 'System Time',
                     position: 'outer-center'
-                },
-                padding: {
-                    right: 1
                 }
             }
+        },
+        padding: {
+            right: 20
         }
     });
     rssi_chart.generate();
@@ -642,13 +802,8 @@ function init_charts() {
     });
     packet_ack_rate_chart.generate();
 
-    setTimeout(function() {
-        visible_cam_temp_chart.addValue('time', 15);
-        visible_cam_temp_chart.addValue('Camera', 90);
-        visible_cam_temp_chart.addValue('Lens 1', 88);
-        visible_cam_temp_chart.addValue('Lens 2', 78);
-        visible_cam_temp_chart.reload();
-        }, 2000);
+    // disable x axis clipping
+    d3.select('.c3-axis.c3-axis-x').attr('clip-path', "");
 
     resize_charts(size_refreshing_charts);
     $(document).on('tabChange', function() {
@@ -658,6 +813,263 @@ function init_charts() {
         resize_charts(size_refreshing_charts);
     });
 
+    return {
+            "thermal": {
+                "vis_cam": {
+                    "chart": visible_cam_temp_chart,
+                    "columnName": "Camera",
+                    "gauge": false
+                },
+                "vis_lens_1": {
+                    "chart": visible_cam_temp_chart,
+                    "columnName": "Lens 1",
+                    "gauge": false
+                },
+                "vis_lens_2": {
+                    "chart": visible_cam_temp_chart,
+                    "columnName": "Lens 2",
+                    "gauge": false
+                },
+                "inf_cam": {
+                    "chart": infrared_cam_temp_chart,
+                    "columnName": "Camera",
+                    "gauge": false
+                },
+                "inf_lens_1": {
+                    "chart": infrared_cam_temp_chart,
+                    "columnName": "Lens 1",
+                    "gauge": false
+                },
+                "inf_lens_2": {
+                    "chart": infrared_cam_temp_chart,
+                    "columnName": "Lens 2",
+                    "gauge": false
+                },
+                "rxn_wheels": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "Reaction Wheels",
+                    "gauge": false
+                },
+                "battery": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "Battery",
+                    "gauge": false
+                },
+                "csk_stack": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "CSK Stack",
+                    "gauge": false
+                },
+                "edison_stack": {
+                    "chart": other_parts_temp_chart,
+                    "columnName": "Edison Stack",
+                    "gauge": false
+                },
+                "+y_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "Y Panel",
+                    "gauge": false
+                },
+                "-y_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-Y Panel",
+                    "gauge": false
+                },
+                "+x_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "X Panel",
+                    "gauge": false
+                },
+                "-x_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-X Panel",
+                    "gauge": false
+                },
+                "+z_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "Z Panel",
+                    "gauge": false
+                },
+                "-z_panel": {
+                    "chart": solar_panel_temp_chart,
+                    "columnName": "-Z Panel",
+                    "gauge": false
+                }
+            },
+            "power": {
+                "+x_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "X Panel",
+                    "gauge": false
+                },
+                "-x_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "-X Panel",
+                    "gauge": false
+                },
+                "+y_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "Y Panel",
+                    "gauge": false
+                },
+                "-y_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "-Y Panel",
+                    "gauge": false
+                },
+                "+z_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "Z Panel",
+                    "gauge": false
+                },
+                "-z_current": {
+                    "chart": solar_panel_current_chart,
+                    "columnName": "-Z Panel",
+                    "gauge": false
+                },
+                "+x_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "X Panel",
+                    "gauge": false
+                },
+                "-x_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "-X Panel",
+                    "gauge": false
+                },
+                "+y_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "Y Panel",
+                    "gauge": false
+                },
+                "-y_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "-Y Panel",
+                    "gauge": false
+                },
+                "+z_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "Z Panel",
+                    "gauge": false
+                },
+                "-z_voltage": {
+                    "chart": solar_panel_voltage_chart,
+                    "columnName": "-Z Panel",
+                    "gauge": false
+                },
+                "battery_voltage": {
+                    "chart": battery_voltage_chart,
+                    "columnName": "Voltage",
+                    "gauge": true
+                },
+                "5v_current": {
+                    "chart": battery_current_chart,
+                    "columnName": "5V",
+                    "gauge": false
+                },
+                "3v3_current": {
+                    "chart": battery_current_chart,
+                    "columnName": "3V3",
+                    "gauge": false
+                },
+                "12v_current": {
+                    "chart": battery_current_chart,
+                    "columnName": "12V",
+                    "gauge": false
+                },
+                "rxn_current": {
+                    "chart": device_current_chart,
+                    "columnName": "Reaction Wheels",
+                    "gauge": false
+                },
+                "vis_cam_current": {
+                    "chart": device_current_chart,
+                    "columnName": "Visible Camera",
+                    "gauge": false
+                },
+                "inf_cam_current": {
+                    "chart": device_current_chart,
+                    "columnName": "Infrared Camera",
+                    "gauge": false
+                }
+            },
+            "adc": {
+                "rxn_x_torque": {
+                    "chart": reaction_wheel_torque_chart,
+                    "columnName": "X",
+                    "gauge": false
+                },
+                "rxn_y_torque": {
+                    "chart": reaction_wheel_torque_chart,
+                    "columnName": "Y",
+                    "gauge": false
+                },
+                "rxn_z_torque": {
+                    "chart": reaction_wheel_torque_chart,
+                    "columnName": "Z",
+                    "gauge": false
+                },
+                "magnetometer_x": {
+                    "chart": magnetometer_reading_chart,
+                    "columnName": "X",
+                    "gauge": false
+                },
+                "magnetometer_y": {
+                    "chart": magnetometer_reading_chart,
+                    "columnName": "Y",
+                    "gauge": false
+                },
+                "magnetometer_z": {
+                    "chart": magnetometer_reading_chart,
+                    "columnName": "Z",
+                    "gauge": false
+                },
+                "magnetorquer_x_current": {
+                    "chart": magnetorquer_current_chart,
+                    "columnName": "X",
+                    "gauge": false
+                },
+                "magnetorquer_y_current": {
+                    "chart": magnetorquer_current_chart,
+                    "columnName": "Y",
+                    "gauge": false
+                },
+                "magnetorquer_z_current": {
+                    "chart": magnetorquer_current_chart,
+                    "columnName": "Z",
+                    "gauge": false
+                }
+            },
+            "cdh": {
+                "cpu_usage": {
+                    "chart": cpu_usage_chart,
+                    "columnName": "Usage",
+                    "gauge": false
+                },
+                "memory_usage": {
+                    "chart": mem_usage_chart,
+                    "columnName": "Usage",
+                    "gauge": false
+                },
+                "storage_usage": {
+                    "chart": storage_usage_chart,
+                    "columnName": "Storage Used",
+                    "gauge": true
+                }
+            },
+            "com": {
+                "rssi": {
+                    "chart": rssi_chart,
+                    "columnName": "RSSI",
+                    "gauge": false
+                },
+                "ack": {
+                    "chart": packet_ack_rate_chart,
+                    "columnName": "Ack Rate",
+                    "gauge": true
+                }
+            }
+        };
 }
 
 function resize_charts(chart_list) {

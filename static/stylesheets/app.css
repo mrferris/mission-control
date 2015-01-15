@@ -15277,25 +15277,27 @@ ul.side-nav.fixed.right-aligned {
 /* line 6, ../scss/_history.scss */
 .com-history .com-history-header {
   font-size: 1.5rem;
+  height: 10%;
 }
-/* line 10, ../scss/_history.scss */
+/* line 11, ../scss/_history.scss */
 .com-history .com-history-content {
+  height: 90%;
   border: 1px solid #e0e0e0;
   border-radius: 2px;
   overflow: auto;
 }
-/* line 16, ../scss/_history.scss */
+/* line 18, ../scss/_history.scss */
 .com-history .com-history-content .com-history-item {
   display: flex;
   line-height: 40px;
   font-size: 1.2rem;
 }
-/* line 22, ../scss/_history.scss */
+/* line 24, ../scss/_history.scss */
 .com-history .com-history-content .com-history-item .com-history-item-time {
   font-weight: bold;
   padding: 0 7px 0;
 }
-/* line 27, ../scss/_history.scss */
+/* line 29, ../scss/_history.scss */
 .com-history .com-history-content .com-history-item .com-history-item-content {
   padding: 0 4px 0;
 }

@@ -5,10 +5,12 @@
 
   .com-history-header {
     font-size: 1.5rem;
+    height: 10%;
   }
 
   .com-history-content {
 //    flex-grow: 1;
+    height: 90%;
     border: 1px solid $light-border-color;
     border-radius: 2px;
     overflow: auto;

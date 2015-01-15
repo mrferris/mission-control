@@ -11,7 +11,7 @@ def index():
 
 @app.route("/beacon_update")
 def beacon_update():
-    while(int(time.time())%5 != 0):
+    while(int(time.time())%1 != 0):
         pass
     time.sleep(1)
     telem_sim_json_dict = generate_sim_data()

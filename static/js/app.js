@@ -35,7 +35,7 @@ function start_updating_status_data(key_map) {
             success: function(json) {
                 console.log(json);
                 handle_beacon_data(json);
-                setTimeout(get_beacon_data, 5000);
+                setTimeout(get_beacon_data, 500);
             },
             error: function(json,string,opt){
                 console.log(json);
@@ -132,11 +132,12 @@ function adjust_beacon_timestamp(timestamp) {
 // Creates charts and returns a mapping of json keys to chart objects and column names
 function init_charts() {
 
-    function Chart(chartSpecs) {
+    function Chart(chartSpecs, maxVisibleDataPoints) {
         this.chartSpecs = chartSpecs;
         this.selector = chartSpecs.bindto;
         this.c3ChartObject = {};
         this.columns = this.chartSpecs.data.columns;
+        this.maxVisibleDataPoints = maxVisibleDataPoints || 7
     }
     Chart.prototype.generate = function() {
         this.c3ChartObject = c3.generate(this.chartSpecs);
@@ -150,6 +151,17 @@ function init_charts() {
     Chart.prototype.setValue = function(columnName, value) {
         this.getColumn(columnName)[1] = value;
     };
+    Chart.prototype.visibleColumns = function() {
+        var visibleColumns = [];
+        for (index in this.columns) {
+            var columnName = this.columns[index][0];
+            var visibleDataPoints = this.columns[index].slice(Math.max(1, this.columns[index].length - this.maxVisibleDataPoints),
+                                                              this.columns[index].length);
+            var visibleColumn = [columnName].concat(visibleDataPoints);
+            visibleColumns.push(visibleColumn);
+        }
+        return visibleColumns
+    };
     Chart.prototype.getColumn = function(columnName) {
         for (index in this.columns) {
             if (this.columns[index][0] == columnName) {
@@ -160,7 +172,7 @@ function init_charts() {
     };
     Chart.prototype.reload = function() {
         this.c3ChartObject.load({
-            columns: this.columns
+            columns: this.visibleColumns()
         })
     };
 
@@ -205,8 +217,7 @@ function init_charts() {
                     position: 'outer-center'
                 },
                 padding: {
-                    left: 0,
-                    right: 1
+                    left: 0
                 }
             }
         },
@@ -259,8 +270,7 @@ function init_charts() {
                     position: 'outer-center'
                 },
                 padding: {
-                    left: 0,
-                    right: 1
+                    left: 0
                 }
             }
         },

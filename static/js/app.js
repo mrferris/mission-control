@@ -24,6 +24,7 @@ function register_command_links(){
         $.ajax({
             dataType : 'json',
             url: "torquer_command",
+            method: 'POST',
             cache: false,
             data: {
                 axis: target_element.data('axis'),
@@ -39,6 +40,7 @@ function register_command_links(){
         $.ajax({
             dataType : 'json',
             url: "rxn_wheel_command",
+            method: 'POST',
             cache: false,
             data: {
                 axis: target_element.data('axis'),
@@ -52,6 +54,7 @@ function register_command_links(){
         $.ajax({
             dataType : 'json',
             url: "image_command",
+            method: 'POST',
             cache: false,
             success: function(json){
                 console.log(json);

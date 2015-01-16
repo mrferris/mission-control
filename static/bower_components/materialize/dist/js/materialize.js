@@ -897,6 +897,7 @@ jQuery.extend( jQuery.easing,
         $indicator.velocity({"right": $tabs_width - (($index + 1) * $tab_width)}, {duration: 300, queue: false, easing: 'easeOutQuad', delay: 80});
       }
 
+        document.dispatchEvent(new CustomEvent('tabChange'));
       // Prevent the anchor's default click action
       e.preventDefault();
     });

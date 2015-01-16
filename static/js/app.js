@@ -3,6 +3,10 @@ $(document).ready(function() {
     $('ul.tabs').tabs();
     $('.tooltipped').tooltip({'delay': 50});
     json_key_chart_map = init_charts();
+    $('.dropdown-button').dropdown({
+        constrain_width: false,
+        hover: false
+    });
 
     start_updating_status_data(json_key_chart_map);
 });

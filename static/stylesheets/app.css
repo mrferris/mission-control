@@ -15148,6 +15148,11 @@ ul.side-nav.fixed.right-aligned {
     margin-bottom: 5em;
   }
 }
+/* line 1, ../scss/_font.scss */
+.font-white {
+  color: white !important;
+}
+
 /* line 1, ../scss/_borders.scss */
 .bottom-border, .com-history .com-history-content .com-history-item {
   border-bottom: 1px solid #e0e0e0;
@@ -15365,6 +15370,16 @@ body {
   content: "";
   clear: both;
   display: table;
+}
+
+/* line 68, ../scss/_panels.scss */
+.content-padding {
+  padding: 15px;
+}
+
+/* line 72, ../scss/_panels.scss */
+.auto-overflow {
+  overflow: auto;
 }
 
 /* line 1, ../scss/_title-panel.scss */

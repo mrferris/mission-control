@@ -75,19 +75,67 @@
                     <div class="panel-header">
                         <div class="panel-title">Command Center</div>
                     </div>
-                    <div class="panel-content">
-                        <ul class="tabs z-depth-1">
-                            <li class="tab"><a href="#thermal-command-tab">Thermal</a></li>
-                            <li class="tab"><a href="#power-command-tab">Power</a></li>
-                            <li class="tab"><a href="#adc-command-tab">ADC</a></li>
-                            <li class="tab"><a href="#cdh-command-tab">CDH</a></li>
-                            <li class="tab"><a href="#com-command-tab">COM</a></li>
-                        </ul>
-                        <div id="thermal-command-tab" class="tab-content">hello from tab 1!</div>
-                        <div id="power-command-tab" class="tab-content">hello from tab 2!</div>
-                        <div id="adc-command-tab" class="tab-content">hello from tab 3!</div>
-                        <div id="cdh-command-tab" class="tab-content">hello from tab 4!</div>
-                        <div id="com-command-tab" class="tab-content">hello from tab 5!</div>
+                    <div class="panel-content auto-overflow">
+                        <div class="content-padding">
+                            <div class="medium-4 columns center content-padding">
+                                <div class="z-depth-1 content-padding">
+                                    <h4 class="center">Camera</h4>
+                                    <a class="waves-effect waves-light btn-large font-white"><i class="mdi-file-cloud left"></i>Update Images</a>
+                                </div>
+                            </div>
+                            <div class="medium-4 columns center content-padding">
+                                <div class="z-depth-1 content-padding">
+                                    <h4 class="center">Magnetorquer</h4>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='magnetorquer-x'>X</a>
+                                    <ul id='magnetorquer-x' class='dropdown-content'>
+                                        <li><a href="#">Forward</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Back</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='magnetorquer-y'>Y</a>
+                                    <ul id='magnetorquer-y' class='dropdown-content'>
+                                        <li><a href="#!">Forward</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Back</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='magnetorquer-z'>Z</a>
+                                    <ul id='magnetorquer-z' class='dropdown-content'>
+                                        <li><a href="#!">Forward</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Back</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="medium-4 columns center content-padding">
+                                <div class="z-depth-1 content-padding">
+                                    <h4 class="center">Reaction Wheels</h4>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='reaction-wheel-x'>X</a>
+                                    <ul id='reaction-wheel-x' class='dropdown-content'>
+                                        <li><a href="#!">On</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='reaction-wheel-y'>Y</a>
+                                    <ul id='reaction-wheel-y' class='dropdown-content'>
+                                        <li><a href="#!">On</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                    <a class='dropdown-button btn-large font-white' href='#' data-activates='reaction-wheel-z'>Z</a>
+                                    <ul id='reaction-wheel-z' class='dropdown-content'>
+                                        <li><a href="#!">On</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#!">Off</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,11 +309,9 @@
     </div>
 
     <script src="../static/bower_components/jquery/dist/jquery.js"></script>
-    <script src="../static/bower_components/materialize/js/velocity.min.js"></script>
-    <script src="../static/bower_components/materialize/js/tabs.js"></script>
-    <script src="../static/bower_components/materialize/js/tooltip.js"></script>
     <script src="../static/bower_components/d3/d3.js"></script>
     <script src="../static/bower_components/c3/c3.js"></script>
+    <script src="../static/bower_components/materialize/dist/js/materialize.js"></script>
     <script src="../static/js/app.js"></script>
 </body>
 </html>

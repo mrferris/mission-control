@@ -3,11 +3,15 @@ from flask import render_template
 from flask import request
 from radio import com
 from pymongo import MongoClient
+import kiss
 import threading
 import redis
 
+
+
 app = Flask(__name__)
 r = redis.StrictRedis('localhost')
+serial = kiss.KISS("/dev/ttyS0",9600)
 
 #Welcome/future-login screen
 @app.route("/index")
@@ -47,6 +51,43 @@ def request_telemetry():
         if isinstance(item['data'],string):
             return item['data']
 
+@app.route("/image_command")
+def request_image():
+    
+    serial.write("i")
+    pubsub = r.pubsub()
+    pubsub.subscribe('image_update')
+    for item in pubsub.listen():
+        if item['data'] != 1:
+            print "GOT IMAGES"
+            return item['data']
+
+
+@app.route("/torquer_command")
+def command_torquer():
+
+    command_map = {}
+    command_map['x','forward'] = 'a'
+    command_map['x','reverse'] = 'b'
+    command_map['x','off'] = 'c'
+    command_map['y','forward'] = 'd'
+    command_map['y','reverse'] = 'e'
+    command_map['y','off'] = 'f'
+    command_map['z','forward'] = 'g'
+    command_map['z','backward'] = 'h'
+    command_map['z','off'] = 'i'
+
+    torquer = request.form['axis']
+    command = request.form['command']
+
+    serial.write(command_map[torquer,command])
+
+@app.route("/rxn_wheel_command")
+def command_rxn():
+
+    command_map = {}
+
+        
 
 @app.route("/missioncontrol")
 def missioncontrol():

@@ -3,6 +3,7 @@ import json
 from pymongo import MongoClient
 import time
 import redis
+import re
 
 
 def com_thread():
@@ -18,22 +19,38 @@ def com_thread():
     beacons = db.beacons
 
     r = radio.Radio()
-    
+    remove_list = ['\x10','\x03']
+
     while True:
         
-        message_string = r.receive_sim_data()
+        message_string = r.receive()
+        message_string = message_string[2:][:-2]
+        message_list =  list(message_string)
+        message_list = [x for x in message_list if x not in remove_list]
+        message_string = ''.join(message_list)
+        json_file = open("received.json","w")
+        json_file.write(message_string)
+        json_file.close()
+
+            
+        print message_string
         message = None
-        print "Message_string: " + message_string
-        print "Message_len: " + str(len(message_string))
+        received_json = None
         try:
-            message = json.loads(message_string)
+            with open("received.json") as file:
+#                print list(file.read())
+                received_json = json.load(file)
 
         except ValueError:
             print "Malformed JSON received."
         
-        if message is not None:
-            rdb.publish('beacon_update',message_string)
-#        message = receive('message.json')
+        if received_json is not None:
+            if received_json['type'] == 'beacon':
+                rdb.publish('beacon_update',message_string)
+            elif received_json['type'] == 'images':
+                rdb.publish('image_update',message_string)
+            else:
+                print "GOT A WRONG DOWNLINK TYPE"
 
 
 
@@ -43,6 +60,6 @@ def receive(file_name):
         return json.load(json_file)
 
         
-#if __name__ == "__main__":
-#    com_thread()
+if __name__ == "__main__":
+    com_thread()
 

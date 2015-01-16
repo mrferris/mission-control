@@ -1,0 +1,29 @@
+.title-panel {
+  @extend .panel;
+  display: flex;
+  flex-direction: column;
+  background-color: $header-background-color;
+  margin-right: 10px;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+  font-family: Nasa;
+
+  .flex-grow {
+    flex-grow: 1;
+  }
+
+  .title {
+    @extend .valign-wrapper;
+    flex-grow: 2;
+    text-shadow: 2px 2px 2px black;
+  }
+  .description {
+    @extend .valign-wrapper;
+    flex-grow: 1;
+  }
+  .logo {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

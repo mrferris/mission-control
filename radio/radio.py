@@ -47,7 +47,6 @@ class Radio():
         sleep(0.5)
         return received_bytes
 
-    
     def receive_one(self):
         
         return self.serial.read()

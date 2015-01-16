@@ -1,0 +1,34 @@
+.tab-content {
+  overflow: auto;
+}
+
+ul.tabs {
+  li.tab.good {
+    a {
+      color: $status-good-color !important;
+      &:hover {
+        color: lighten($status-good-color, 20%) !important;
+      }
+    }
+
+  }
+
+  li.tab.bad {
+    a {
+      color: $status-bad-color !important;
+      &:hover {
+        color: lighten($status-bad-color, 20%) !important;
+      }
+    }
+  }
+
+  li.tab.warning {
+    a {
+      color: $status-warning-color !important;
+      &:hover {
+        color: lighten($status-warning-color, 20%) !important;
+      }
+    }
+  }
+}
+

@@ -8,6 +8,7 @@ $(document).ready(function() {
         hover: false
     });
     register_command_links();
+    activate_raw_processed_toggle();
 
     start_updating_status_data(json_key_chart_map);
 });
@@ -15,6 +16,15 @@ $(document).ready(function() {
 $(window).resize(function() {
     adjust_div_heights();
 });
+
+function activate_raw_processed_toggle(){
+    $("#processed-satellite-image").hide();
+    $('#raw-processed-toggle').click(function(event) {
+      var target = $(event.target);
+      $("#raw-satellite-image").toggle();
+      $("#processed-satellite-image").toggle();
+});
+}
 
 function register_command_links(){
     $('.magnetorquer-command').click(function(event){

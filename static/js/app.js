@@ -27,7 +27,7 @@ function register_command_links(){
             cache: false,
             data: {
                 axis: target_element.data('axis'),
-                comamnd: target_element.data('command')
+                command: target_element.data('command')
             }
         });
         event.preventDefault();
@@ -42,7 +42,7 @@ function register_command_links(){
             cache: false,
             data: {
                 axis: target_element.data('axis'),
-                comamnd: target_element.data('command')
+                command: target_element.data('command')
             }
         });
         event.preventDefault();

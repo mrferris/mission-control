@@ -147,6 +147,11 @@ function start_updating_status_data(key_map) {
             for (category in beacon_data) {
                 for (key in beacon_data[category]) {
                     if (key_map.hasOwnProperty(category) && key_map[category].hasOwnProperty(key)) {
+
+                        if (key_map[category][key].hasOwnProperty('table-value-id')) {
+                            $("#" + key_map[category][key]['table-value-id']).html(beacon_data[category][key]);
+                        }
+
                         if (key == 'ack') {
                             ack_rate = 100 * (beacon_data[category][key] /
                                     (beacon_data[category]['nack'] + beacon_data[category][key]));
@@ -520,12 +525,8 @@ function init_charts() {
             x: 'time',
             columns: [
                 ['time'],
-                ['X Panel'],
-                ['-X Panel'],
-                ['Y Panel'],
-                ['-Y Panel'],
-                ['Z Panel'],
-                ['-Z Panel']
+                ['Top Panel 1'],
+                ['Top Panel 2']
             ]
         },
         axis: {
@@ -559,12 +560,8 @@ function init_charts() {
             x: 'time',
             columns: [
                 ['time'],
-                ['X Panel'],
-                ['-X Panel'],
-                ['Y Panel'],
-                ['-Y Panel'],
-                ['Z Panel'],
-                ['-Z Panel']
+                ['Top Panel 1'],
+                ['Top Panel 2']
             ]
         },
         axis: {
@@ -598,12 +595,8 @@ function init_charts() {
             x: 'time',
             columns: [
                 ['time'],
-                ['X Panel'],
-                ['-X Panel'],
-                ['Y Panel'],
-                ['-Y Panel'],
-                ['Z Panel'],
-                ['-Z Panel']
+                ['Top Panel 1'],
+                ['Top Panel 2']
             ]
         },
         axis: {
@@ -890,144 +883,100 @@ function init_charts() {
                 "vis_cam": {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Camera",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "vis-cam-temp-camera-value"
                 },
                 "vis_lens_1": {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Lens 1",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "vis-cam-temp-lens1-value"
                 },
                 "vis_lens_2": {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Lens 2",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "vis-cam-temp-lens2-value"
                 },
                 "inf_cam": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Camera",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "inf-cam-temp-camera-value"
                 },
                 "inf_lens_1": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Lens 1",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "inf-cam-temp-lens1-value"
                 },
                 "inf_lens_2": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Lens 2",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "inf-cam-temp-lens2-value"
                 },
                 "rxn_wheels": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Reaction Wheels",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "other-part-temp-rxn-value"
                 },
                 "battery": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Battery",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "other-part-temp-battery-value"
                 },
                 "csk_stack": {
                     "chart": other_parts_temp_chart,
                     "columnName": "CSK Stack",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "other-part-temp-csk-value"
                 },
                 "edison_stack": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Edison Stack",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "other-part-temp-edison-value"
                 },
-                "+y_panel": {
+                "top1_panel": {
                     "chart": solar_panel_temp_chart,
-                    "columnName": "Y Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 1",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-temp-1-value"
                 },
-                "-y_panel": {
+                "top2_panel": {
                     "chart": solar_panel_temp_chart,
-                    "columnName": "-Y Panel",
-                    "gauge": false
-                },
-                "+x_panel": {
-                    "chart": solar_panel_temp_chart,
-                    "columnName": "X Panel",
-                    "gauge": false
-                },
-                "-x_panel": {
-                    "chart": solar_panel_temp_chart,
-                    "columnName": "-X Panel",
-                    "gauge": false
-                },
-                "+z_panel": {
-                    "chart": solar_panel_temp_chart,
-                    "columnName": "Z Panel",
-                    "gauge": false
-                },
-                "-z_panel": {
-                    "chart": solar_panel_temp_chart,
-                    "columnName": "-Z Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 2",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-temp-2-value"
                 }
             },
             "power": {
-                "+x_current": {
+                "top1_current": {
                     "chart": solar_panel_current_chart,
-                    "columnName": "X Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 1",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-current-1-value"
                 },
-                "-x_current": {
+                "top2_current": {
                     "chart": solar_panel_current_chart,
-                    "columnName": "-X Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 2",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-current-2-value"
                 },
-                "+y_current": {
-                    "chart": solar_panel_current_chart,
-                    "columnName": "Y Panel",
-                    "gauge": false
-                },
-                "-y_current": {
-                    "chart": solar_panel_current_chart,
-                    "columnName": "-Y Panel",
-                    "gauge": false
-                },
-                "+z_current": {
-                    "chart": solar_panel_current_chart,
-                    "columnName": "Z Panel",
-                    "gauge": false
-                },
-                "-z_current": {
-                    "chart": solar_panel_current_chart,
-                    "columnName": "-Z Panel",
-                    "gauge": false
-                },
-                "+x_voltage": {
+                "top1_voltage": {
                     "chart": solar_panel_voltage_chart,
-                    "columnName": "X Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 1",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-voltage-1-value"
                 },
-                "-x_voltage": {
+                "top2_voltage": {
                     "chart": solar_panel_voltage_chart,
-                    "columnName": "-X Panel",
-                    "gauge": false
-                },
-                "+y_voltage": {
-                    "chart": solar_panel_voltage_chart,
-                    "columnName": "Y Panel",
-                    "gauge": false
-                },
-                "-y_voltage": {
-                    "chart": solar_panel_voltage_chart,
-                    "columnName": "-Y Panel",
-                    "gauge": false
-                },
-                "+z_voltage": {
-                    "chart": solar_panel_voltage_chart,
-                    "columnName": "Z Panel",
-                    "gauge": false
-                },
-                "-z_voltage": {
-                    "chart": solar_panel_voltage_chart,
-                    "columnName": "-Z Panel",
-                    "gauge": false
+                    "columnName": "Top Panel 2",
+                    "gauge": false,
+                    "table-value-id": "solar-panel-voltage-2-value"
                 },
                 "battery_voltage": {
                     "chart": battery_voltage_chart,
@@ -1037,49 +986,58 @@ function init_charts() {
                 "5v_current": {
                     "chart": battery_current_chart,
                     "columnName": "5V",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "bus-current-5v-value"
                 },
                 "3v3_current": {
                     "chart": battery_current_chart,
                     "columnName": "3V3",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "bus-current-3v3-value"
                 },
                 "12v_current": {
                     "chart": battery_current_chart,
                     "columnName": "12V",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "bus-current-12v-value"
                 },
                 "rxn_current": {
                     "chart": device_current_chart,
                     "columnName": "Reaction Wheels",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "device-current-rxn-value"
                 },
                 "vis_cam_current": {
                     "chart": device_current_chart,
                     "columnName": "Visible Camera",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "device-current-vis-value"
                 },
                 "inf_cam_current": {
                     "chart": device_current_chart,
                     "columnName": "Infrared Camera",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "device-current-inf-value"
                 }
             },
             "adc": {
                 "rxn_x_torque": {
                     "chart": reaction_wheel_torque_chart,
                     "columnName": "X",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "rxn-torque-x-value"
                 },
                 "rxn_y_torque": {
                     "chart": reaction_wheel_torque_chart,
                     "columnName": "Y",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "rxn-torque-y-value"
                 },
                 "rxn_z_torque": {
                     "chart": reaction_wheel_torque_chart,
                     "columnName": "Z",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "rxn-torque-z-value"
                 },
                 "magnetometer_x": {
                     "chart": magnetometer_reading_chart,
@@ -1099,29 +1057,34 @@ function init_charts() {
                 "magnetorquer_x_current": {
                     "chart": magnetorquer_current_chart,
                     "columnName": "X",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "torquer-current-x-value"
                 },
                 "magnetorquer_y_current": {
                     "chart": magnetorquer_current_chart,
                     "columnName": "Y",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "torquer-current-y-value"
                 },
                 "magnetorquer_z_current": {
                     "chart": magnetorquer_current_chart,
                     "columnName": "Z",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "torquer-current-z-value"
                 }
             },
             "cdh": {
                 "cpu_usage": {
                     "chart": cpu_usage_chart,
                     "columnName": "Usage",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "cpu-usage-value"
                 },
                 "memory_usage": {
                     "chart": mem_usage_chart,
                     "columnName": "Usage",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "mem-usage-value"
                 },
                 "storage_usage": {
                     "chart": storage_usage_chart,
@@ -1133,7 +1096,8 @@ function init_charts() {
                 "rssi": {
                     "chart": rssi_chart,
                     "columnName": "RSSI",
-                    "gauge": false
+                    "gauge": false,
+                    "table-value-id": "rssi-value"
                 },
                 "ack": {
                     "chart": packet_ack_rate_chart,

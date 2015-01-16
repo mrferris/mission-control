@@ -856,7 +856,7 @@ function init_charts() {
         bindto: '#packet-ack-rate-chart',
         data: {
             columns: [
-                ['Ack Rate', 85.9]
+                ['Ack Rate']
             ],
             type: 'gauge'
         },

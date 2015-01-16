@@ -80,7 +80,7 @@
                             <div class="medium-4 columns center content-padding">
                                 <div class="z-depth-1 content-padding">
                                     <h4 class="center">Camera</h4>
-                                    <a class="waves-effect waves-light btn-large font-white update-images-command"><i class="mdi-file-cloud left"></i>Update Images</a>
+                                    <a class="waves-effect waves-light btn-large font-white update-images-command"><i class="mdi-image-photo-camera left"></i>Update Images</a>
                                 </div>
                             </div>
                             <div class="medium-4 columns center content-padding">
@@ -190,7 +190,7 @@
                                                 Device Name
                                             </th>
                                             <th data-field="device-value">
-                                                Current Temperature (&deg;C)
+                                                Temperature (&deg;C)
                                             </th>
                                         </tr>
                                     </thead>
@@ -223,7 +223,7 @@
                                                 Device Name
                                             </th>
                                             <th data-field="device-value">
-                                                Current Temperature (&deg;C)
+                                                Temperature (&deg;C)
                                             </th>
                                         </tr>
                                     </thead>
@@ -256,7 +256,7 @@
                                                 Device Name
                                             </th>
                                             <th data-field="device-value">
-                                                Current Temperature (&deg;C)
+                                                Temperature (&deg;C)
                                             </th>
                                         </tr>
                                     </thead>
@@ -293,7 +293,7 @@
                                                 Device Name
                                             </th>
                                             <th data-field="device-value">
-                                                Current Temperature (&deg;C)
+                                                Temperature (&deg;C)
                                             </th>
                                         </tr>
                                     </thead>
@@ -317,6 +317,28 @@
                                     <div class="chart-title">Solar Panel Current</div>
                                     <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Device Name
+                                            </th>
+                                            <th data-field="device-value">
+                                                Current (mA)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Top Panel 1</td>
+                                            <td id="solar-panel-current-1-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Top Panel 2</td>
+                                            <td id="solar-panel-current-2-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="solar-panel-current-chart"></div>
                             </div>
                             <div class="chart-wrapper full-width z-depth-1">
@@ -324,13 +346,61 @@
                                     <div class="chart-title">Solar Panel Voltage</div>
                                     <div class="chart-status"><i class="chart-status-icon-bad"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Device Name
+                                            </th>
+                                            <th data-field="device-value">
+                                                Voltage (V)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Top Panel 1</td>
+                                            <td id="solar-panel-voltage-1-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Top Panel 2</td>
+                                            <td id="solar-panel-voltage-2-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="solar-panel-voltage-chart"></div>
                             </div>
                             <div class="chart-wrapper full-width z-depth-1">
                                 <div class="chart-heading">
-                                    <div class="chart-title">Battery Current</div>
+                                    <div class="chart-title">Bus Currents</div>
                                     <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Voltage
+                                            </th>
+                                            <th data-field="device-value">
+                                                Current (mA)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>3V3</td>
+                                            <td id="bus-current-3v3-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5V</td>
+                                            <td id="bus-current-5v-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12V</td>
+                                            <td id="bus-current-12v-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="battery-current-chart"></div>
                             </div>
                             <div class="chart-wrapper full-width z-depth-1">
@@ -338,6 +408,32 @@
                                     <div class="chart-title">Device Currents</div>
                                     <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Device
+                                            </th>
+                                            <th data-field="device-value">
+                                                Current (mA)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Reaction Wheels</td>
+                                            <td id="device-current-rxn-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Visible Camera</td>
+                                            <td id="device-current-vis-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Infrared Camera</td>
+                                            <td id="device-current-inf-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="device-current-chart"></div>
                             </div>
                         </div>
@@ -347,6 +443,32 @@
                                     <div class="chart-title">Reaction Wheel Torque</div>
                                     <div class="chart-status"><i class="chart-status-icon-bad"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Axis
+                                            </th>
+                                            <th data-field="device-value">
+                                                Torque (N * m)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>X</td>
+                                            <td id="rxn-torque-x-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Y</td>
+                                            <td id="rxn-torque-y-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Z</td>
+                                            <td id="rxn-torque-z-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="reaction-wheel-torque-chart"></div>
                             </div>
                             <div class="chart-wrapper full-width z-depth-1">
@@ -354,6 +476,32 @@
                                     <div class="chart-title">Magnetorquer Current</div>
                                     <div class="chart-status"><i class="chart-status-icon-bad"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="device-name">
+                                                Axis
+                                            </th>
+                                            <th data-field="device-value">
+                                                Current (mA)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>X</td>
+                                            <td id="torquer-current-x-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Y</td>
+                                            <td id="torquer-current-y-value"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Z</td>
+                                            <td id="torquer-current-z-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="magnetorquer-current-chart"></div>
                             </div>
                         </div>
@@ -363,6 +511,18 @@
                                     <div class="chart-title">CPU Usage</div>
                                     <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>CPU Usage (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="cpu-usage-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="cpu-usage-chart">
                                 </div>
                             </div>
@@ -371,6 +531,18 @@
                                     <div class="chart-title">Memory Usage</div>
                                     <div class="chart-status"><i class="chart-status-icon-warning"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>Memory Usage (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="mem-usage-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="mem-usage-chart">
                                 </div>
                             </div>
@@ -396,6 +568,18 @@
                                     <div class="chart-title">RSSI</div>
                                     <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
+                                <table class="striped centered small-bottom-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>RSSI (dBm)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="rssi-value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <div id="rssi-chart"></div>
                             </div>
                             <div class="chart-wrapper full-width z-depth-1">

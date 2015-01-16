@@ -7,6 +7,7 @@ $(document).ready(function() {
         constrain_width: false,
         hover: false
     });
+    register_command_links();
 
     start_updating_status_data(json_key_chart_map);
 });
@@ -14,6 +15,35 @@ $(document).ready(function() {
 $(window).resize(function() {
     adjust_div_heights();
 });
+
+function register_command_links(){
+    $('.magnetorquer-command').click(function(event){
+        target_element = $(event.target);
+        $.ajax({
+            dataType : 'json',
+            url: "torquer-command",
+            cache: false,
+            data: {
+                axis: target_element.data('axis'),
+                comamnd: target_element.data('command')
+            }
+        });
+        event.preventDefault();
+    });
+    $('.rxn-wheel-command').click(function(event){
+        target_element = $(event.target);
+        $.ajax({
+            dataType : 'json',
+            url: "rxn-wheel-command",
+            cache: false,
+            data: {
+                axis: target_element.data('axis'),
+                comamnd: target_element.data('command')
+            }
+        });
+        event.preventDefault();
+    });
+}
 
 function adjust_div_heights() {
     fill_remaining_height(".panel", ".panel-header", ".panel-content");

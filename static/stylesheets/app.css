@@ -15173,6 +15173,11 @@ ul.side-nav.fixed.right-aligned {
   border-right: 1px solid #e0e0e0;
 }
 
+/* line 1, ../scss/_helpers.scss */
+.small-bottom-margin {
+  margin-bottom: 20px;
+}
+
 /* line 5, ../scss/_status.scss */
 .status-overview-panel-header .status-overview {
   height: 130px;

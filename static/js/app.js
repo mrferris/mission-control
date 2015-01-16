@@ -23,7 +23,7 @@ function register_command_links(){
         console.log(target_element.data('command'));
         $.ajax({
             dataType : 'json',
-            url: "torquer-command",
+            url: "torquer_command",
             cache: false,
             data: {
                 axis: target_element.data('axis'),
@@ -38,7 +38,7 @@ function register_command_links(){
         console.log(target_element.data('command'));
         $.ajax({
             dataType : 'json',
-            url: "rxn-wheel-command",
+            url: "rxn_wheel_command",
             cache: false,
             data: {
                 axis: target_element.data('axis'),
@@ -47,6 +47,18 @@ function register_command_links(){
         });
         event.preventDefault();
     });
+    $('.update-images-command').click(function(event){
+        target_element = $(event.target);
+        $.ajax({
+            dataType : 'json',
+            url: "image_command",
+            cache: false,
+            success: function(json){
+                console.log(json);
+            }
+        });
+        event.preventDefault();
+    })
 }
 
 function adjust_div_heights() {

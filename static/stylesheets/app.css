@@ -15382,6 +15382,11 @@ body {
   overflow: auto;
 }
 
+/* line 76, ../scss/_panels.scss */
+.hidden-overflow {
+  overflow: hidden;
+}
+
 /* line 1, ../scss/_title-panel.scss */
 .title-panel {
   display: flex;

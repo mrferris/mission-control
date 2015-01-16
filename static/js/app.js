@@ -360,7 +360,7 @@ function init_charts() {
         bindto: '#storage-usage-chart',
         data: {
             columns: [
-                ['Storage Used', 91.4]
+                ['Storage Used']
             ],
             type: 'gauge'
         },

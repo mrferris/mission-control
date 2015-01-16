@@ -19,6 +19,8 @@ $(window).resize(function() {
 function register_command_links(){
     $('.magnetorquer-command').click(function(event){
         target_element = $(event.target);
+        console.log(target_element.data('axis'));
+        console.log(target_element.data('command'));
         $.ajax({
             dataType : 'json',
             url: "torquer-command",
@@ -32,6 +34,8 @@ function register_command_links(){
     });
     $('.rxn-wheel-command').click(function(event){
         target_element = $(event.target);
+        console.log(target_element.data('axis'));
+        console.log(target_element.data('command'));
         $.ajax({
             dataType : 'json',
             url: "rxn-wheel-command",

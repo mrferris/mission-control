@@ -170,11 +170,11 @@
                                 </div>
                             </div>
                             <ul class="tabs">
-                                <li class="tab status-tab warning"><a href="#thermal-status-tab" class="tab-link">Thermal</a></li>
-                                <li class="tab status-tab bad"><a href="#power-status-tab" class="tab-link">Power</a></li>
-                                <li class="tab status-tab bad"><a href="#adc-status-tab" class="tab-link">ADC</a></li>
-                                <li class="tab status-tab bad"><a href="#cdh-status-tab" class="tab-link">CDH</a></li>
-                                <li class="tab status-tab good"><a href="#com-status-tab" class="tab-link">COM</a></li>
+                                <li id="thermal-tab" class="tab status-tab"><a href="#thermal-status-tab" class="tab-link">Thermal</a></li>
+                                <li id="power-tab" class="tab status-tab"><a href="#power-status-tab" class="tab-link">Power</a></li>
+                                <li id="adc-tab" class="tab status-tab"><a href="#adc-status-tab" class="tab-link">ADC</a></li>
+                                <li id="cdh-tab" class="tab status-tab"><a href="#cdh-status-tab" class="tab-link">CDH</a></li>
+                                <li id="com-tab" class="tab status-tab"><a href="#com-status-tab" class="tab-link">COM</a></li>
                             </ul>
                         </div>
 
@@ -586,7 +586,6 @@
                             <div class="chart-wrapper full-width z-depth-1">
                                 <div class="chart-heading">
                                     <div class="chart-title">Packet Ack Rate</div>
-                                    <div class="chart-status"><i class="chart-status-icon-good"></i></div>
                                 </div>
                                 <div id="packet-ack-rate-chart" class="hidden-overflow"></div>
                             </div>

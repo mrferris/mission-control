@@ -94,7 +94,7 @@ def random_torque():
     return random_float(2, 20, 1)
 
 def random_temp():
-    return random_float(70, 100, 2)
+    return random_float(-20, 60, 2)
 
 def random_current():
     return random_float(1500, 3000, 0)

@@ -151,10 +151,13 @@ function start_updating_status_data(key_map) {
                 for (key in beacon_data[category]) {
                     if (key_map.hasOwnProperty(category) && key_map[category].hasOwnProperty(key)) {
 
+                        // Adjust values in tables
                         if (key_map[category][key].hasOwnProperty('table-value-id')) {
                             $("#" + key_map[category][key]['table-value-id']).html(beacon_data[category][key]);
                         }
 
+                        // Handle special case of ack-- figure out ack ratio
+                        // Otherwise, add value directly to chart
                         if (key == 'ack') {
                             ack_rate = 100 * (beacon_data[category][key] /
                                     (beacon_data[category]['nack'] + beacon_data[category][key]));
@@ -166,12 +169,37 @@ function start_updating_status_data(key_map) {
                     }
                 }
             }
+
+            // Add timestamp value to each chart's time column
             var updated_charts_array = set_to_array(updated_charts_set);
             add_time_values_to_charts(updated_charts_array, datetime);
             for (index in updated_charts_array) {
                 updated_charts_array[index].reload();
             }
+
+            // Update chart status icons
+            for (chart_index in updated_charts_array) {
+                var chart = updated_charts_array[chart_index];
+                var keys = get_chart_keys(chart);
+                var chart_status = STATUS_GOOD;
+                for (key_index in keys){
+                    var category = keys[key_index].category;
+                    var key = keys[key_index].key;
+                    if (beacon_data.hasOwnProperty(category)) {
+                        if (beacon_data[category].hasOwnProperty(key)) {
+                            var key_status = get_status(
+                                key_map[category][key],
+                                beacon_data[category][key]);
+                            console.log("key status: " + key_status);
+                            chart_status = Math.max(chart_status, key_status);
+                        }
+                    }
+                }
+                update_chart_status(chart, chart_status);
+            }
+
             current_datetime = new Date();
+            // Adjust last updated time
             $("#last-updated-time").html(current_datetime.toTimeString().substring(0, 8));
         }
     }
@@ -191,6 +219,69 @@ function start_updating_status_data(key_map) {
                 charts[index].addValue('time', datetime);
             }
         }
+    }
+
+    const STATUS_GOOD = 0;
+    const STATUS_WARNING = 1;
+    const STATUS_BAD = 2;
+
+    function update_chart_status(chart, status) {
+        chart_selector = chart.selector;
+        chart_heading = $(chart_selector).siblings('.chart-heading');
+        chart_status = chart_heading.find('.chart-status');
+        chart_status_icon = chart_status.find('i');
+
+        console.log(chart + ' ' + status);
+
+        if (status == STATUS_GOOD) {
+           chart_status_icon.attr("class", "chart-status-icon-good");
+        } else if (status == STATUS_WARNING) {
+            chart_status_icon.attr("class", "chart-status-icon-warning");
+        } else if (status == STATUS_BAD) {
+            chart_status_icon.attr("class", "chart-status-icon-bad");
+        }
+    }
+
+    function get_chart_keys(chart) {
+        var keys = [];
+        for (category in key_map) {
+            for (key in key_map[category]) {
+                if(key_map[category][key].hasOwnProperty('chart')) {
+                    if (key_map[category][key].chart == chart) {
+                        keys.push({
+                            'key': key,
+                            'category': category
+                        });
+                    }
+                }
+            }
+        }
+        return keys;
+    }
+
+    function get_status(params, value){
+        var status = STATUS_GOOD;
+        if (params.hasOwnProperty('min')) {
+            if (params.hasOwnProperty('warning-tolerance')) {
+                if (value < (params['min'] + params['warning-tolerance'])) {
+                    status = STATUS_WARNING;
+                }
+            }
+            if (value < params['min']) {
+                status = STATUS_BAD;
+            }
+        }
+        if (params.hasOwnProperty('max')) {
+            if (params.hasOwnProperty('warning-tolerance')) {
+                if (value > (params['max'] - params['warning-tolerance'])) {
+                    status = STATUS_WARNING;
+                }
+            }
+            if (value > params['max']) {
+                status = STATUS_BAD;
+            }
+        }
+        return status;
     }
 }
 
@@ -887,73 +978,109 @@ function init_charts() {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Camera",
                     "gauge": false,
-                    "table-value-id": "vis-cam-temp-camera-value"
+                    "table-value-id": "vis-cam-temp-camera-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "vis_lens_1": {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Lens 1",
                     "gauge": false,
-                    "table-value-id": "vis-cam-temp-lens1-value"
+                    "table-value-id": "vis-cam-temp-lens1-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "vis_lens_2": {
                     "chart": visible_cam_temp_chart,
                     "columnName": "Lens 2",
                     "gauge": false,
-                    "table-value-id": "vis-cam-temp-lens2-value"
+                    "table-value-id": "vis-cam-temp-lens2-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "inf_cam": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Camera",
                     "gauge": false,
-                    "table-value-id": "inf-cam-temp-camera-value"
+                    "table-value-id": "inf-cam-temp-camera-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "inf_lens_1": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Lens 1",
                     "gauge": false,
-                    "table-value-id": "inf-cam-temp-lens1-value"
+                    "table-value-id": "inf-cam-temp-lens1-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "inf_lens_2": {
                     "chart": infrared_cam_temp_chart,
                     "columnName": "Lens 2",
                     "gauge": false,
-                    "table-value-id": "inf-cam-temp-lens2-value"
+                    "table-value-id": "inf-cam-temp-lens2-value",
+                    "min": -5,
+                    "max": 45,
+                    "warning-tolerance": 5
                 },
                 "rxn_wheels": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Reaction Wheels",
                     "gauge": false,
-                    "table-value-id": "other-part-temp-rxn-value"
+                    "table-value-id": "other-part-temp-rxn-value",
+                    "min": -40,
+                    "max": 80,
+                    "warning-tolerance": 5
                 },
                 "battery": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Battery",
                     "gauge": false,
-                    "table-value-id": "other-part-temp-battery-value"
+                    "table-value-id": "other-part-temp-battery-value",
+                    "min": -40,
+                    "max": 80,
+                    "warning-tolerance": 5
                 },
                 "csk_stack": {
                     "chart": other_parts_temp_chart,
                     "columnName": "CSK Stack",
                     "gauge": false,
-                    "table-value-id": "other-part-temp-csk-value"
+                    "table-value-id": "other-part-temp-csk-value",
+                    "min": -40,
+                    "max": 85,
+                    "warning-tolerance": 5
                 },
                 "edison_stack": {
                     "chart": other_parts_temp_chart,
                     "columnName": "Edison Stack",
                     "gauge": false,
-                    "table-value-id": "other-part-temp-edison-value"
+                    "table-value-id": "other-part-temp-edison-value",
+                    "min": -40,
+                    "max": 85,
+                    "warning-tolerance": 5
                 },
                 "top1_panel": {
                     "chart": solar_panel_temp_chart,
                     "columnName": "Top Panel 1",
                     "gauge": false,
-                    "table-value-id": "solar-panel-temp-1-value"
+                    "table-value-id": "solar-panel-temp-1-value",
+                    "min": 10,
+                    "max": 50,
+                    "warning-tolerance": 5
                 },
                 "top2_panel": {
                     "chart": solar_panel_temp_chart,
                     "columnName": "Top Panel 2",
                     "gauge": false,
-                    "table-value-id": "solar-panel-temp-2-value"
+                    "table-value-id": "solar-panel-temp-2-value",
+                    "min": 10,
+                    "max": 50,
+                    "warning-tolerance": 5
                 }
             },
             "power": {

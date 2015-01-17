@@ -309,7 +309,7 @@ function set_to_array(set) {
 
 // Add back constant value that was subtracted on the server
 function adjust_beacon_timestamp(timestamp) {
-    const adjustment = 0;
+    const adjustment = 1000000000;
     return timestamp + adjustment;
 }
 

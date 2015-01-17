@@ -92,6 +92,14 @@ function fill_remaining_height(parent_div_selector, top_div_selector, div_select
     }
 }
 
+function update_raw_image_url(url) {
+    $("#raw-satellite-image").attr("src", url);
+}
+
+function update_processed_image_url(url) {
+    $("#processed-satellite-image").attr("src", url);
+}
+
 function update_feed(text) {
     d = new Date();
     var timestring = d.toTimeString().substring(0, 8);

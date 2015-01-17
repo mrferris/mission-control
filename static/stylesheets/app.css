@@ -15423,97 +15423,66 @@ body {
 }
 
 /* line 1, ../scss/_switch.scss */
-.toggle-switch {
-  position: relative;
-  width: 137px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-/* line 5, ../scss/_switch.scss */
-.toggle-switch-checkbox {
-  display: none;
-}
-
-/* line 8, ../scss/_switch.scss */
-.toggle-switch-label {
-  display: block;
-  overflow: hidden;
-  cursor: pointer;
-  border: 2px solid #999999;
-  border-radius: 20px;
-}
-
-/* line 12, ../scss/_switch.scss */
-.toggle-switch-inner {
-  display: block;
-  width: 200%;
-  margin-left: -100%;
-  -moz-transition: margin 0.3s ease-in 0s;
-  -webkit-transition: margin 0.3s ease-in 0s;
-  -o-transition: margin 0.3s ease-in 0s;
-  transition: margin 0.3s ease-in 0s;
-}
-
-/* line 17, ../scss/_switch.scss */
-.toggle-switch-inner:before, .toggle-switch-inner:after {
-  display: block;
-  float: left;
-  width: 50%;
-  height: 40px;
-  padding: 0;
-  line-height: 40px;
-  font-size: 14px;
-  color: white;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/* line 22, ../scss/_switch.scss */
-.toggle-switch-inner:before {
-  content: "Raw";
-  padding-left: 10px;
-  background-color: #BBDEFB;
-  color: #000000;
-}
-
-/* line 27, ../scss/_switch.scss */
-.toggle-switch-inner:after {
-  content: "Processed";
-  padding-right: 10px;
-  background-color: #1565C0;
-  color: #FFFFFF;
-  text-align: right;
-}
-
-/* line 33, ../scss/_switch.scss */
-.toggle-switch-switch {
-  display: block;
-  width: 34px;
-  margin: 3px;
-  background: #FFFFFF;
-  border: 2px solid #999999;
-  border-radius: 20px;
+.cmn-toggle {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 93px;
-  -moz-transition: all 0.3s ease-in 0s;
-  -webkit-transition: all 0.3s ease-in 0s;
-  -o-transition: all 0.3s ease-in 0s;
-  transition: all 0.3s ease-in 0s;
+  margin-left: -9999px;
+  visibility: hidden;
 }
 
-/* line 41, ../scss/_switch.scss */
-.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
-  margin-left: 0;
+/* line 6, ../scss/_switch.scss */
+.cmn-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
 }
 
-/* line 44, ../scss/_switch.scss */
-.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
-  right: 0px;
+/* line 16, ../scss/_switch.scss */
+input.cmn-toggle-round + label {
+  padding: 2px;
+  width: 76px;
+  height: 40px;
+  background-color: #dddddd;
+  border-radius: 60px;
+}
+
+/* line 23, ../scss/_switch.scss */
+input.cmn-toggle-round + label:before,
+input.cmn-toggle-round + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: "";
+}
+
+/* line 32, ../scss/_switch.scss */
+input.cmn-toggle-round + label:before {
+  right: 1px;
+  background-color: #f1f1f1;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+
+/* line 38, ../scss/_switch.scss */
+input.cmn-toggle-round + label:after {
+  width: 37.6px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: margin 0.4s;
+}
+
+/* line 45, ../scss/_switch.scss */
+input.cmn-toggle-round:checked + label:before {
+  background-color: #8ce196;
+}
+
+/* line 48, ../scss/_switch.scss */
+input.cmn-toggle-round:checked + label:after {
+  margin-left: 40px;
 }
 
 /* line 3, ../scss/_camera-panel.scss */
@@ -15539,50 +15508,48 @@ body {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
   border-right: 1px solid #e0e0e0;
   box-sizing: border-box;
 }
 
-/* line 26, ../scss/_camera-panel.scss */
+/* line 30, ../scss/_camera-panel.scss */
 .image-info-item-container {
   flex-grow: 1;
   text-align: center;
 }
 
-/* line 31, ../scss/_camera-panel.scss */
-.image-info-item, .time-taken, .position-taken, .switch {
+/* line 35, ../scss/_camera-panel.scss */
+.image-info-item, .time-taken, .position-taken {
   something: something;
 }
 
-/* line 35, ../scss/_camera-panel.scss */
+/* line 39, ../scss/_camera-panel.scss */
 .time-taken {
   text-align: center;
   margin: 0 auto;
 }
-/* line 39, ../scss/_camera-panel.scss */
+/* line 43, ../scss/_camera-panel.scss */
 .time-taken i {
   vertical-align: middle;
 }
 
-/* line 44, ../scss/_camera-panel.scss */
+/* line 48, ../scss/_camera-panel.scss */
 .position-taken {
   margin: 0 auto;
   text-align: center;
 }
-/* line 48, ../scss/_camera-panel.scss */
+/* line 52, ../scss/_camera-panel.scss */
 .position-taken i {
   vertical-align: middle;
 }
 
-/* line 53, ../scss/_camera-panel.scss */
-.switch {
-  width: 50%;
-  margin: 0 auto;
-}
-
-/* line 59, ../scss/_camera-panel.scss */
+/* line 61, ../scss/_camera-panel.scss */
 .toggle-switch {
-  text-align: left;
+  width: 45%;
   margin: 0 auto;
 }
 

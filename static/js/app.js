@@ -177,16 +177,19 @@ function start_updating_status_data(key_map) {
                             $("#" + key_map[category][key]['table-value-id']).html(beacon_data[category][key]);
                         }
 
-                        // Handle special case of ack-- figure out ack ratio
-                        // Otherwise, add value directly to chart
-                        if (key == 'ack') {
-                            ack_rate = 100 * (beacon_data[category][key] /
-                                    (beacon_data[category]['nack'] + beacon_data[category][key]));
-                            add_chart_data_point(key_map[category][key], ack_rate);
-                        } else {
-                            add_chart_data_point(key_map[category][key], beacon_data[category][key]);
+                        if (key_map[category][key].hasOwnProperty('chart')) {
+                            // Handle special cases
+                            // Otherwise, add value directly to chart
+                            if (key == 'ack') {
+                                ack_rate = 100 * (beacon_data[category][key] /
+                                        (beacon_data[category]['nack'] + beacon_data[category][key]));
+                                add_chart_data_point(key_map[category][key], ack_rate);
+                            } else {
+                                add_chart_data_point(key_map[category][key], beacon_data[category][key]);
+                            }
+                            updated_charts_set.add(key_map[category][key].chart);
                         }
-                        updated_charts_set.add(key_map[category][key].chart);
+
                     }
                 }
             }
@@ -1246,6 +1249,9 @@ function init_charts() {
                 }
             },
             "cdh": {
+                "top": {
+                    "table-value-id": "top-output"
+                },
                 "cpu_usage": {
                     "chart": cpu_usage_chart,
                     "columnName": "Usage",

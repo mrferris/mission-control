@@ -15178,6 +15178,11 @@ ul.side-nav.fixed.right-aligned {
   margin-bottom: 20px;
 }
 
+/* line 5, ../scss/_helpers.scss */
+.monospace {
+  font-family: "Lucida Console", monospace;
+}
+
 /* line 5, ../scss/_status.scss */
 .status-overview-panel-header .status-overview {
   height: 130px;

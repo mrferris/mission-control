@@ -74,6 +74,7 @@ def sim_cdh_data():
     cdh_data['cpu_usage'] = random_float(0, 1, 2)
     cdh_data['memory_usage'] = random_float(0, 1, 2)
     cdh_data['storage_usage'] = random_float(0, 100, 2)
+    cdh_data['top'] = open('top.txt').read()
     return cdh_data
 
 def sim_adc_data():

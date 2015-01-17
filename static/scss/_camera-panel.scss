@@ -19,6 +19,10 @@ $image-width: 78%;
   flex-direction: column;
   width: 100%;
   height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
   border-right: 1px solid #e0e0e0;
   box-sizing: border-box;
 }
@@ -50,14 +54,12 @@ $image-width: 78%;
   }
 }
 
-.switch {
-  @extend .image-info-item;
-  width: 50%;
-  margin: 0 auto;
-}
-
+//.switch {
+//  @extend .image-info-item;
+//}
+//
 .toggle-switch {
-  text-align: left;
+  width: 45%;
   margin: 0 auto;
 }
 

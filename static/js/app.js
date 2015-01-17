@@ -29,35 +29,37 @@ function activate_raw_processed_toggle(){
 function register_command_links(){
     $('.magnetorquer-command').click(function(event){
         target_element = $(event.target);
-        console.log(target_element.data('axis'));
-        console.log(target_element.data('command'));
+        axis = target_element.data('axis');
+        command = target_element.data('command');
         $.ajax({
             dataType : 'json',
             url: "torquer_command",
             method: 'POST',
             cache: false,
             data: {
-                axis: target_element.data('axis'),
-                command: target_element.data('command')
+                axis: axis,
+                command: command
             }
         });
         event.preventDefault();
+        update_feed("Magnetorquer " + axis + " axis \"" + command + "\" command sent");
     });
     $('.rxn-wheel-command').click(function(event){
         target_element = $(event.target);
-        console.log(target_element.data('axis'));
-        console.log(target_element.data('command'));
+        axis = target_element.data('axis');
+        command = target_element.data('command');
         $.ajax({
             dataType : 'json',
             url: "rxn_wheel_command",
             method: 'POST',
             cache: false,
             data: {
-                axis: target_element.data('axis'),
-                command: target_element.data('command')
+                axis: axis,
+                command: command
             }
         });
         event.preventDefault();
+        update_feed("Reaction wheel " + axis + " axis \"" + command + "\" command sent");
     });
     $('.update-images-command').click(function(event){
         target_element = $(event.target);
@@ -71,6 +73,7 @@ function register_command_links(){
             }
         });
         event.preventDefault();
+        update_feed("\"Update images\" command sent");
     })
 }
 
@@ -1098,13 +1101,17 @@ function init_charts() {
                     "chart": solar_panel_current_chart,
                     "columnName": "Top Panel 1",
                     "gauge": false,
-                    "table-value-id": "solar-panel-current-1-value"
+                    "table-value-id": "solar-panel-current-1-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "top2_current": {
                     "chart": solar_panel_current_chart,
                     "columnName": "Top Panel 2",
                     "gauge": false,
-                    "table-value-id": "solar-panel-current-2-value"
+                    "table-value-id": "solar-panel-current-2-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "top1_voltage": {
                     "chart": solar_panel_voltage_chart,

@@ -1134,37 +1134,48 @@ function init_charts() {
                     "chart": battery_current_chart,
                     "columnName": "5V",
                     "gauge": false,
-                    "table-value-id": "bus-current-5v-value"
-                },
+                    "table-value-id": "bus-current-5v-value",
+                    "max": 500,
+                    "warning-tolerance": 100                },
                 "3v3_current": {
                     "chart": battery_current_chart,
                     "columnName": "3V3",
                     "gauge": false,
-                    "table-value-id": "bus-current-3v3-value"
+                    "table-value-id": "bus-current-3v3-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "12v_current": {
                     "chart": battery_current_chart,
                     "columnName": "12V",
                     "gauge": false,
-                    "table-value-id": "bus-current-12v-value"
+                    "table-value-id": "bus-current-12v-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "rxn_current": {
                     "chart": device_current_chart,
                     "columnName": "Reaction Wheels",
                     "gauge": false,
-                    "table-value-id": "device-current-rxn-value"
+                    "table-value-id": "device-current-rxn-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "vis_cam_current": {
                     "chart": device_current_chart,
                     "columnName": "Visible Camera",
                     "gauge": false,
-                    "table-value-id": "device-current-vis-value"
+                    "table-value-id": "device-current-vis-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "inf_cam_current": {
                     "chart": device_current_chart,
                     "columnName": "Infrared Camera",
                     "gauge": false,
-                    "table-value-id": "device-current-inf-value"
+                    "table-value-id": "device-current-inf-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 }
             },
             "adc": {
@@ -1205,19 +1216,25 @@ function init_charts() {
                     "chart": magnetorquer_current_chart,
                     "columnName": "X",
                     "gauge": false,
-                    "table-value-id": "torquer-current-x-value"
+                    "table-value-id": "torquer-current-x-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "magnetorquer_y_current": {
                     "chart": magnetorquer_current_chart,
                     "columnName": "Y",
                     "gauge": false,
-                    "table-value-id": "torquer-current-y-value"
+                    "table-value-id": "torquer-current-y-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 },
                 "magnetorquer_z_current": {
                     "chart": magnetorquer_current_chart,
                     "columnName": "Z",
                     "gauge": false,
-                    "table-value-id": "torquer-current-z-value"
+                    "table-value-id": "torquer-current-z-value",
+                    "max": 500,
+                    "warning-tolerance": 100
                 }
             },
             "cdh": {

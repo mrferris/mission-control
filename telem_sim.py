@@ -97,7 +97,7 @@ def random_temp():
     return random_float(-20, 60, 2)
 
 def random_current():
-    return random_float(1500, 3000, 0)
+    return random_float(100, 550, 0)
 
 def random_voltage():
     return random_float(5, 20, 1)

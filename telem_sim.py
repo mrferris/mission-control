@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import time, json, random, sys
+import time, json, random, sys, math
 
 app = Flask(__name__)
 
@@ -75,7 +75,7 @@ def sim_cdh_data():
     cdh_data = {}
     cdh_data['cpu_usage'] = random_float(0, 1, 2)
     cdh_data['memory_usage'] = random_float(0, 1, 2)
-    cdh_data['storage_usage'] = random_float(0, 100, 2)
+    cdh_data['storage_usage'] = storage_usage()
     return cdh_data
 
 def sim_adc_data():
@@ -105,12 +105,20 @@ def random_voltage():
     return random_float(5, 20, 1)
 
 def battery_voltage():
-    elapsed_time = time.time() - start_time
-    num_beacons = elapsed_time / seconds_between_telemetry_beacons
+    num_beacons = elapsed_time() / seconds_between_telemetry_beacons
     battery_voltage = (100 + num_beacons * -1 / float(20))
     # random + or - 1
     battery_voltage += random_float(-1, 1, 2)
     return battery_voltage
+
+def storage_usage():
+    num_beacons = elapsed_time() / seconds_between_telemetry_beacons
+    storage_usage = 15 * math.sin(num_beacons / 30 * math.pi) + 20
+    storage_usage += random_float(-5, 5, 2)
+    return storage_usage
+
+def elapsed_time():
+    return time.time() - start_time
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

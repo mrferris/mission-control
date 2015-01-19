@@ -9,6 +9,8 @@ try:
 except IndexError:
     seconds_between_telemetry_beacons = 1
 
+start_time = time.time()
+
 @app.route("/")
 def index():
     return render_template("index.jinja")
@@ -60,7 +62,7 @@ def sim_power_data():
     power_data['top2_current'] = random_current()
     power_data['top1_voltage'] = random_voltage()
     power_data['top2_voltage'] = random_voltage()
-    power_data['battery_voltage'] = random_float(50, 100, 1)
+    power_data['battery_voltage'] = battery_voltage()
     power_data['5v_current'] = random_current()
     power_data['3v3_current'] = random_current()
     power_data['12v_current'] = random_current()
@@ -101,6 +103,14 @@ def random_current():
 
 def random_voltage():
     return random_float(5, 20, 1)
+
+def battery_voltage():
+    elapsed_time = time.time() - start_time
+    num_beacons = elapsed_time / seconds_between_telemetry_beacons
+    battery_voltage = (100 + num_beacons * -1 / float(20))
+    # random + or - 1
+    battery_voltage += random_float(-1, 1, 2)
+    return battery_voltage
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
